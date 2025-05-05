@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.1.0",
+    "jquery-validation": "^1.19.3"
+  }
+}
