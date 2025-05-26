@@ -1,0 +1,125 @@
+@{
+    ViewBag.Title = "Enrollment Approval";
+    Layout = "~/Views/Shared/ProgramHeadHeader.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Program Head</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-section {
+            padding: 30px;
+            flex-grow: 1;
+            margin-top: 56px; /* Adjust based on header height */
+        }
+
+        .card-custom {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .action-buttons button {
+            margin-right: 5px; /* Spacing between buttons */
+        }
+    </style>
+</head>
+<body>
+<!-- Header Placeholder -->
+
+<div class="container content-section">
+    <h1 class="mb-4">Enrollment Approval</h1>
+    <p class="lead">Review and manage pending student enrollment applications for your program.</p>
+
+    <div class="card-custom">
+        <h3 class="mb-3">Pending Approvals</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Course</th>
+                    <th>Year and Semester</th>
+                    <th>Student Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="enrollmentApprovalsTableBody">
+                <tr>
+                    <td>6713621</td>
+                    <td>Edmark Talingting</td>
+                    <td>BSIT</td>
+                    <td>3rd Year - 1st Semester</td>
+                    <td>Regular</td>
+                    <td>2025-05-22</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-sm btn-info">View More</button>
+                        <button class="btn btn-sm btn-success">Approve</button>
+                        <button class="btn btn-sm btn-danger">Reject</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2023-002</td>
+                    <td>Maria Clara</td>
+                    <td>BSCS</td>
+                    <td>2nd Year - 2nd Semester</td>
+                    <td>Irregular</td>
+                    <td>2024-05-14</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-sm btn-info">View More</button>
+                        <button class="btn btn-sm btn-success">Approve</button>
+                        <button class="btn btn-sm btn-danger">Reject</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-end mt-3">
+            <button class="btn btn-info">Refresh List</button>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="~/Content/bootstrap.bundle.min.js"></script>
+
+<!-- Dynamic Header Load + Table Actions -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Action handlers for approve/reject/view
+        document.getElementById('enrollmentApprovalsTableBody').addEventListener('click', function (event) {
+            const row = event.target.closest('tr');
+            const studentId = row.querySelector('td').textContent;
+
+            if (event.target.classList.contains('btn-success')) {
+                alert('Approving enrollment for Student ID: ' + studentId);
+                // TODO: Send AJAX request or redirect to controller action
+            } else if (event.target.classList.contains('btn-danger')) {
+                alert('Rejecting enrollment for Student ID: ' + studentId);
+                // TODO: Handle rejection logic
+            } else if (event.target.classList.contains('btn-info')) {
+                alert('View more details for Student ID: ' + studentId);
+                // TODO: Redirect or open modal with student details
+            }
+        });
+    });
+</script>
+</body>
+</html>

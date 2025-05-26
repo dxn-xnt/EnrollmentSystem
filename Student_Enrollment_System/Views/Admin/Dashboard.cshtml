@@ -1,0 +1,117 @@
+@{
+    Layout = "~/Views/Shared/AdminHeader.cshtml";
+    ViewBag.Title = "Admin Dashboard";
+}
+
+@section Styles {
+    <style>
+        html{
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-section {
+            padding: 30px;
+            flex-grow: 1;
+        }
+        .metric-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        .metric-card h3 {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        .metric-card .count {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #007bff;
+        }
+        .lead {
+            color: #495057;
+            margin-bottom: 2rem;
+        }
+    </style>
+}
+
+<div class="container content-section">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    <p class="lead">Welcome, Admin! Here you can find an overview of key system metrics.</p>
+
+    <div class="row">
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="metric-card">
+                <h3>Total Admins</h3>
+                <div class="count">@(ViewBag.TotalAdmins ?? "1")</div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="metric-card">
+                <h3>Total Program Heads</h3>
+                <div class="count">@(ViewBag.TotalProgramHeads ?? "5")</div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="metric-card">
+                <h3>Total Teachers</h3>
+                <div class="count">@(ViewBag.TotalTeachers ?? "50")</div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="metric-card">
+                <h3>Total Students</h3>
+                <div class="count">@(ViewBag.TotalStudents ?? "500")</div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="metric-card">
+                <h3>Total Courses</h3>
+                <div class="count">@(ViewBag.TotalCourses ?? "10")</div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="metric-card">
+                <h3>Total Subjects</h3>
+                <div class="count">@(ViewBag.TotalSubjects ?? "120")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight active link after header is loaded
+            const currentPath = window.location.pathname;
+            const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+            const navLinks = document.querySelectorAll('#navbarNavAdmin .nav-link');
+            
+            navLinks.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                const linkPage = linkHref.substring(linkHref.lastIndexOf('/') + 1);
+
+                if (linkPage.toLowerCase() === currentPage.toLowerCase() || 
+                    (currentPage === "" && linkPage.toLowerCase() === "dashboard")) {
+                    link.classList.add('active');
+                    link.setAttribute('aria-current', 'page');
+                } else {
+                    link.classList.remove('active');
+                    link.removeAttribute('aria-current');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,194 @@
+@{
+    ViewBag.Title = "Student List";
+    Layout = "~/Views/Shared/ProgramHeadHeader.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <!-- Add jQuery before Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Hide scrollbar */
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .content-section {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        .info-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .info-card h4 {
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .info-card p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .student-table {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .status-regular {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .status-irregular {
+            color: #dc3545;
+            font-weight: 500;
+        }
+
+        .btn-view {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+<!-- Header Placeholder -->
+<div id="programhead-header-placeholder"></div>
+
+<div class="container content-section">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Students List</h1>
+    </div>
+
+    <div class="student-table">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-primary">
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Year Level</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>2023-001</td>
+                    <td>Juan Dela Cruz</td>
+                    <td>BSIT</td>
+                    <td>3rd Year</td>
+                    <td><span class="status-regular">Regular</span></td>
+                    <td>
+                        <a href="@Url.Action("Details", "Student", new { id = "2023-001" })" class="btn btn-info btn-sm btn-view">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2023-002</td>
+                    <td>Maria Santos</td>
+                    <td>BSCS</td>
+                    <td>2nd Year</td>
+                    <td><span class="status-regular">Regular</span></td>
+                    <td>
+                        <a href="@Url.Action("Details", "Student", new { id = "2023-002" })" class="btn btn-info btn-sm btn-view">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2023-003</td>
+                    <td>Pedro Reyes</td>
+                    <td>BSIS</td>
+                    <td>4th Year</td>
+                    <td><span class="status-irregular">Irregular</span></td>
+                    <td>
+                        <a href="@Url.Action("Details", "Student", new { id = "2023-003" })" class="btn btn-info btn-sm btn-view">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2023-004</td>
+                    <td>Ana Lopez</td>
+                    <td>BSIT</td>
+                    <td>1st Year</td>
+                    <td><span class="status-regular">Regular</span></td>
+                    <td>
+                        <a href="@Url.Action("Details", "Student", new { id = "2023-004" })" class="btn btn-info btn-sm btn-view">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2023-005</td>
+                    <td>Luis Garcia</td>
+                    <td>BSCS</td>
+                    <td>3rd Year</td>
+                    <td><span class="status-irregular">Irregular</span></td>
+                    <td>
+                        <a href="@Url.Action("Details", "Student", new { id = "2023-005" })" class="btn btn-info btn-sm btn-view">View</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript files -->
+<script src="~/Content/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+                const currentPath = window.location.pathname;
+                const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+                const navLinks = document.querySelectorAll('#navbarNavProgramHead .nav-link');
+                navLinks.forEach(link => {
+                    const linkHref = link.getAttribute('href');
+                    const linkPage = linkHref.substring(linkHref.lastIndexOf('/') + 1);
+
+                    if (linkPage.toLowerCase() === currentPage.toLowerCase()) {
+                        link.classList.add('active');
+                        link.setAttribute('aria-current', 'page');
+                    } else {
+                        link.classList.remove('active');
+                        link.removeAttribute('aria-current');
+                    }
+                });
+            })
+
+
+        // Optional: handle view buttons (already handled by Razor links)
+        // You can remove this block if using actual anchor tags above
+        document.querySelectorAll('.btn-view').forEach(button => {
+            button.addEventListener('click', function () {
+                const studentId = this.closest('tr').querySelector('td:first-child').textContent;
+                const studentName = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                alert(`Viewing details for: ${studentName} (${studentId})`);
+                // In a real app, redirect or open modal
+            });
+    });
+</script>
+</body>
+</html>

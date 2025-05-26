@@ -7,16 +7,22 @@ namespace Student_Enrollment_System.Models
 {
     public class Student
     {
-        private int Id { get; set; }
-        private string FirstName { get; set; }
-        private string LastName { get; set; }
-        private string MiddleName { get; set; }
-        private string HomeAddress { get; set; }
-        private string CityAddress { get; set; }
-        private string District { get; set; }
-        private string Contact { get; set; }
-        private string Email { get; set; }
-        private int YearLevel { get; set; }
-        private string Program { get; set; }
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MiddleName { get; set; }
+        public string HomeAddress { get; set; }
+        public string CityAddress { get; set; }
+        public DateTime Birthdate { get; set; }
+        public string District { get; set; }
+        public string Contact { get; set; }
+        public string Email { get; set; }
+        public int YearLevel { get; set; }
+        public int Semester { get; set; }
+        public string Program { get; set; }
+        public string Major { get; set; }
+        public Boolean IsFirstGen { get; set; }
+        public string Status { get; set; }
+        public string Password { get; set; }
     }
 }

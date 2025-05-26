@@ -1,31 +1,177 @@
 @{
-    ViewBag.Title = "Home Page";
+    Layout = null;
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enrollment System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: ;    /* Orange */
+            --secondary: ;  /* Dark blue */
+            --light: #EFEEEA;      /* Light gray */
+            --text-dark: #273F4F;
+            --text-light: ;
+        }
+        html{
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #EFEEEA;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-radius: 0;
+            border: 1px solid #000000;
+        }
+
+        .content-section {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .content-section h1 {
+            font-size: 2.5rem;
+            color: #273F4F;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .content-section p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: #5F6C76;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            font-size: 1rem;
+            min-width: 150px;
+            padding: 12px 30px;
+            border-radius: 0px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #FE7743;
+        }
+        .btn-primary:hover {
+            background-color: #e56a3c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #273F4F;
+        }
+        .btn-secondary:hover {
+            background-color: #1e3442;
+            transform: translateY(-2px);
+        }
+
+        .redirect-link {
+            width: 100%;
+            height: 100%;
+            min-width: 200px;
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            cursor: pointer;
+            color: black;
+            text-decoration: none;
+        }
+        .redirect-link:hover {
+           text-decoration: underline;
+        }
+
+        .image-section {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        @@media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .content-section {
+                padding: 40px 30px;
+                text-align: center;
+            }
+            .image-section {
+                min-height: 250px;
+                order: -1;
+            }
+            .btn-group {
+                justify-content: center;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .content-section {
+                padding: 30px 20px;
+            }
+            .content-section h1 {
+                font-size: 2rem;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content-section">
+            <h1>Enrollment System</h1>
+            <p>Streamline your academic journey with our comprehensive enrollment platform. Manage your courses, track progress, and access educational resources all in one place.</p>
+            
+            <div class="btn-group">
+                <a href="@Url.Action("StudentLogIn", "Account")" class="btn btn-primary">Student Login</a>
+                <a href="@Url.Action("SignUp", "Account")" class="btn btn-secondary">Create Account</a>
+                <a href="@Url.Action("FacultyLogIn", "Account")" class="redirect-link">Go to Faculty Login</a>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+</body>
+</html>
