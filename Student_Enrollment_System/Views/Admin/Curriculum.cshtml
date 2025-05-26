@@ -1,0 +1,308 @@
+@model IEnumerable<Student_Enrollment_System.Models.Program>
+@{
+    Layout = "~/Views/Shared/AdminHeader.cshtml";
+    ViewBag.Title = "Manage Curriculum - Enrollment System";
+}
+
+@section Styles {
+<style>
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-section {
+        padding: 30px;
+        flex-grow: 1;
+    }
+
+    .program-card {
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+        margin-bottom: 30px;
+    }
+
+    .table-responsive {
+        margin-bottom: 30px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th, td {
+        border: 1px solid #000000;
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #FE7743;
+        font-weight: 500;
+        color: white;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: rgba(254, 119, 67, 0.1);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn {
+        border-radius: 0 !important;
+        font-weight: 500 !important;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .btn-success {
+        background-color: #273F4F !important;
+        color: white !important;
+    }
+
+    .btn-primary {
+        background-color: #FE7743 !important;
+        border-color: #FE7743 !important;
+    }
+
+    .btn-outline-secondary {
+        background-color: white !important;
+        color: #6c757d !important;
+        border-color: #6c757d !important;
+    }
+
+    .no-courses {
+        text-align: center;
+        padding: 30px;
+        color: #6C757D;
+    }
+
+    .form-select {
+        border-radius: 0;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+        background-color: #273F4F;
+        color: white;
+    }
+</style>
+}
+
+<div class="container content-section">
+    <h1 class="mb-4">Manage Curriculum</h1>
+
+    <div class="program-card">
+        <!-- Program Selection -->
+        <div class="mb-4">
+            <label for="programSelect" class="form-label">Select Program:</label>
+            <select class="form-select" id="programSelect" name="programSelect">
+                <option value="" selected disabled>Choose Program...</option>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var program in Model)
+                    {
+                        <option value="@program.Code">@program.Title</option>
+                    }
+                }
+                else
+                {
+                    <option disabled>No programs found</option>
+                }
+            </select>
+        </div>
+
+        <!-- Academic Filters -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <label for="academicYearSelect" class="form-label">Academic Year:</label>
+                <select class="form-select" id="academicYearSelect" name="academicYearSelect">
+                    <option value="" selected disabled>Choose Academic Year...</option>
+                    @{
+                        var academicYears = ViewBag.AcademicYears as List<Student_Enrollment_System.Models.AcademicYear>;
+                        if (academicYears?.Any() == true)
+                        {
+                            foreach (var year in academicYears)
+                            {
+                                <option value="@year.Code">@year.StartYear - @year.EndYear</option>
+                            }
+                        }
+                        else
+                        {
+                            <option disabled>No academic years available</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="semesterSelect" class="form-label">Semester:</label>
+                <select class="form-select" id="semesterSelect" name="semesterSelect">
+                    <option value="" selected disabled>Choose Semester...</option>
+                    @{
+                        var semesters = ViewBag.Semesters as List<Student_Enrollment_System.Models.Semester>;
+                        if (semesters?.Any() == true)
+                        {
+                            foreach (var sem in semesters)
+                            {
+                                <option value="@sem.Id">@sem.Name</option>
+                            }
+                        }
+                        else
+                        {
+                            <option disabled>No semesters available</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="yearLevelSelect" class="form-label">Year Level:</label>
+                <select class="form-select" id="yearLevelSelect" name="yearLevelSelect">
+                    <option value="" selected disabled>Choose Year Level...</option>
+                    @{
+                        var yearLevels = ViewBag.YearLevels as List<Student_Enrollment_System.Models.YearLevel>;
+                        if (yearLevels?.Any() == true)
+                        {
+                            foreach (var yearLevel in yearLevels)
+                            {
+                                <option value="@yearLevel.Id">@yearLevel.Title</option>
+                            }
+                        }
+                        else
+                        {
+                            <option disabled>No year levels available</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <!-- Program Details Table -->
+        <div id="programDetailsTable" class="mt-4" style="display: none;">
+            <h4 id="selectedProgramTitle" class="mb-3"></h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Descriptive Title</th>
+                            <th>Prerequisite(s)</th>
+                            <th>Units</th>
+                            <th>Lec</th>
+                            <th>Lab</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="programTableBody">
+                        <tr>
+                            <td colspan="8" class="no-courses">Select a program to view courses</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex mt-4">
+            <button class="btn btn-success me-2" id="assignCourseBtn" data-bs-toggle="modal" data-bs-target="#assignCourseModal">
+                Assign Course
+            </button>
+            <button class="btn btn-outline-secondary" id="clearFiltersBtn" style="display: none;">
+                Clear Filters
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Assign Course Modal -->
+<div class="modal fade" id="assignCourseModal" tabindex="-1" aria-labelledby="assignCourseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignCourseModalLabel">Assign Courses to Program</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Current Program:</label>
+                        <p class="fw-bold" id="modalProgramName">-</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Year & Semester:</label>
+                        <p class="fw-bold" id="modalYearSemester">-</p>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="courseSearch" placeholder="Search courses...">
+                </div>
+                <div class="course-list-container" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50px"></th>
+                                <th>Course Code</th>
+                                <th>Title</th>
+                                <th>Units</th>
+                            </tr>
+                        </thead>
+                        <tbody id="availableCoursesList"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmAssign">Assign Selected Courses</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="@Url.Content("~/Scripts/jquery-3.7.0.min.js")"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.bundle.min.js")"></script>
+<script>
+    $(document).ready(function() {
+        // Highlight active nav link
+        const currentPath = window.location.pathname;
+        const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+        const navLinks = $('#navbarNavAdmin .nav-link');
+
+        navLinks.each(function() {
+            const linkHref = $(this).attr('href');
+            const linkPage = linkHref ? linkHref.substring(linkHref.lastIndexOf('/') + 1) : '';
+
+            if (linkPage.toLowerCase() === currentPage.toLowerCase()) {
+                $(this).addClass('active').attr('aria-current', 'page');
+            } else {
+                $(this).removeClass('active').removeAttr('aria-current');
+            }
+        });
+
+        // Add hover effects
+        $('table tbody tr').hover(
+            function() {
+                $(this).css('background-color', 'rgba(254, 119, 67, 0.1)');
+            },
+            function() {
+                $(this).css('background-color', '');
+            }
+        );
+    });
+</script>
+}

@@ -1,0 +1,324 @@
+@{
+    ViewBag.Title = "Enrollment";
+    Layout = "~/Views/Shared/StudentHeader.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment - Enrollment System</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-section {
+            padding: 30px;
+            flex-grow: 1;
+        }
+        /* Styles for the dynamically displayed subject table */
+        #subjectSelectionArea {
+            display: none; /* Hidden by default */
+        }
+        .info-display-box {
+            background-color: #e9ecef; /* Light grey background */
+            padding: 15px;
+            border-radius: .3rem;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #343a40; /* Darker text */
+        }
+    </style>
+</head>
+<body>
+<div class="container content-section">
+    <h1 class="mb-4">Student Enrollment</h1>
+    <p class="lead">Begin your enrollment process, select subjects, and confirm your course load for the upcoming academic term.</p>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title mb-4">Student Information</h5>
+            <form id="enrollmentForm">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="studentId" class="form-label">Student ID</label>
+                        <input type="text" class="form-control" id="studentId" placeholder="Enter Student ID">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="schoolYear" class="form-label">School Year</label>
+                        <input type="text" class="form-control" id="schoolYear" placeholder="e.g., 2024-2025">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="enrollmentSemester" class="form-label">Semester</label>
+                        <select class="form-select" id="enrollmentSemester">
+                            <option selected disabled>Choose...</option>
+                            <option value="1st Semester">1st Semester</option>
+                            <option value="2nd Semester">2nd Semester</option>
+                            <option value="Summer">Summer</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="studentStatus" class="form-label">Student Status</label>
+                        <select class="form-select" id="studentStatus">
+                            <option selected disabled>Choose...</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Irregular">Irregular</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="enrollmentStatus" class="form-label">Enrollment Status</label>
+                        <select class="form-select" id="enrollmentStatus">
+                            <option selected disabled>Choose...</option>
+                            <option value="New">New</option>
+                            <option value="Old">Old</option>
+                            <option value="Transferee">Transferee</option>
+                            <option value="Cross-Enrollee">Cross-Enrollee</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Enter First Name">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="middleName" class="form-label">Middle Name</label>
+                        <input type="text" class="form-control" id="middleName" placeholder="Enter Middle Name">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="homeAddress" class="form-label">Home Address</label>
+                    <input type="text" class="form-control" id="homeAddress" placeholder="Enter Home Address">
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="contactNumber" class="form-label">Contact Number</label>
+                        <input type="tel" class="form-control" id="contactNumber" placeholder="e.g., 09123456789">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter Email Address">
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label for="yearLevel" class="form-label">Year Level</label>
+                        <select class="form-select" id="yearLevel">
+                            <option selected disabled>Choose...</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="major" class="form-label">Major</label>
+                        <input type="text" class="form-control" id="major" placeholder="e.g., Software Dev">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="program" class="form-label">Program</label>
+                        <select class="form-select" id="program">
+                            <option selected disabled>Choose...</option>
+                            <option value="BSIT">BS Information Technology</option>
+                            <option value="BSCS">BS Computer Science</option>
+                            <option value="BSEE">BS Electrical Engineering</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="blockSection" class="form-label">Block Section</label>
+                        <input type="text" class="form-control" id="blockSection" placeholder="e.g., IT-A">
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <h5 class="card-title">Subject Selection</h5>
+                <p class="text-danger">Note: ONLY Irregular Students will fill out this section.</p>
+                <button type="button" class="btn btn-info mb-3" id="selectSubjectsBtn">SELECT SUBJECTS</button>
+
+                <div id="subjectSelectionArea">
+                    <div class="table-responsive mb-3">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>MIS CODE</th>
+                                <th>COURSE CODE</th>
+                                <th>DESCRIPTIVE TITLE</th>
+                                <th>Time</th>
+                                <th>Days</th>
+                                <th>Room</th>
+                                <th>Units</th>
+                                <th>Action</th> </tr>
+                            </thead>
+                            <tbody id="availableSubjectsTableBody">
+                            <tr>
+                                <td>MIS-GE101</td>
+                                <td>GE 101</td>
+                                <td>Understanding the Self</td>
+                                <td>8:00 AM - 9:00 AM</td>
+                                <td>M, W</td>
+                                <td>RM 201</td>
+                                <td class="units-cell">3</td>
+                                <td><button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button></td>
+                            </tr>
+                            <tr>
+                                <td>MIS-IT203</td>
+                                <td>IT 203</td>
+                                <td>Database Management</td>
+                                <td>10:00 AM - 11:30 AM</td>
+                                <td>T, Th</td>
+                                <td>RM 305</td>
+                                <td class="units-cell">3</td>
+                                <td><button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button></td>
+                            </tr>
+                            <tr>
+                                <td>MIS-IT203L</td>
+                                <td>IT 203L</td>
+                                <td>Database Management (Lab)</td>
+                                <td>1:00 PM - 3:00 PM</td>
+                                <td>F</td>
+                                <td>LAB 101</td>
+                                <td class="units-cell">1</td>
+                                <td><button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button></td>
+                            </tr>
+                            <tr>
+                                <td>MIS-PE102</td>
+                                <td>PE 102</td>
+                                <td>Physical Education 2</td>
+                                <td>3:00 PM - 4:00 PM</td>
+                                <td>M</td>
+                                <td>GYM</td>
+                                <td class="units-cell">2</td>
+                                <td><button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="mb-2">Selected Subjects</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>MIS CODE</th>
+                                <th>COURSE CODE</th>
+                                <th>DESCRIPTIVE TITLE</th>
+                                <th>Time</th>
+                                <th>Days</th>
+                                <th>Room</th>
+                                <th>Units</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody id="selectedSubjectsTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="card-text mt-3"><strong>Total Units:</strong> <span id="totalUnitsDisplay">0</span></p>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-4">CONFIRM ENROLLMENT</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Enrollment Page Specific Logic ---
+        const selectSubjectsBtn = document.getElementById('selectSubjectsBtn');
+        const subjectSelectionArea = document.getElementById('subjectSelectionArea');
+        const availableSubjectsTableBody = document.getElementById('availableSubjectsTableBody');
+        const selectedSubjectsTableBody = document.getElementById('selectedSubjectsTableBody');
+        const totalUnitsDisplay = document.getElementById('totalUnitsDisplay');
+
+        // Function to calculate and update total units
+        function updateSelectedUnits() {
+            let totalUnits = 0;
+            const rows = selectedSubjectsTableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                // Units column is at index 6 (0-indexed) in the new table structure
+                const unitsCell = row.children[6];
+                if (unitsCell) {
+                    const units = parseInt(unitsCell.textContent.trim());
+                    if (!isNaN(units)) {
+                        totalUnits += units;
+                    }
+                }
+            });
+            totalUnitsDisplay.textContent = totalUnits;
+        }
+
+        // Show subject selection area when "SELECT SUBJECTS" is clicked
+        selectSubjectsBtn.addEventListener('click', function() {
+            subjectSelectionArea.style.display = 'block';
+            // Initially calculate units for any pre-filled subjects (if any)
+            updateSelectedUnits();
+        });
+
+        // Handle adding subjects
+        availableSubjectsTableBody.addEventListener('click', function(event) {
+            if (event.target.classList.contains('add-subject-btn')) {
+                const row = event.target.closest('tr');
+                const newRow = row.cloneNode(true); // Clone the row
+
+                // Change 'Add' button to 'Remove' button
+                const actionCell = newRow.querySelector('.add-subject-btn').closest('td');
+                actionCell.innerHTML = '<button type="button" class="btn btn-danger btn-sm remove-subject-btn">Remove</button>';
+
+                selectedSubjectsTableBody.appendChild(newRow); // Add to selected table
+                row.remove(); // Remove from available table
+
+                updateSelectedUnits(); // Recalculate total units
+            }
+        });
+
+        // Handle removing subjects
+        selectedSubjectsTableBody.addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-subject-btn')) {
+                const row = event.target.closest('tr');
+                const newRow = row.cloneNode(true); // Clone the row
+
+                // Change 'Remove' button back to 'Add' button
+                const actionCell = newRow.querySelector('.remove-subject-btn').closest('td');
+                actionCell.innerHTML = '<button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button>';
+
+                availableSubjectsTableBody.appendChild(newRow); // Add back to available table
+                row.remove(); // Remove from selected table
+
+                updateSelectedUnits(); // Recalculate total units
+            }
+        });
+
+        // Optional: Form submission handler (for preventing default behavior)
+        document.getElementById('enrollmentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            alert('Enrollment Confirmed! (This is a placeholder, actual submission logic would go here)');
+            // Here you would collect all form data and selected subjects
+            // and send it to your backend for processing.
+        });
+    });
+</script>
+</body>
+</html>

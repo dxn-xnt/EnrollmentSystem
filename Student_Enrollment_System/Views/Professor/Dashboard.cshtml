@@ -1,0 +1,99 @@
+@{
+    ViewBag.Title = "Professor Dashboard";
+    Layout = "~/Views/Shared/ProfessorHeader.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-section {
+            padding: 30px;
+            flex-grow: 1;
+            margin-top: 56px; /* Adjust based on header height to prevent overlap */
+        }
+        .info-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            text-align: center; /* Centered text for cleaner look without icons */
+        }
+        .info-card h4 {
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        .info-card p {
+            font-size: 1.1em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="container content-section">
+    <h1 class="mb-4">Teacher Dashboard</h1>
+    <p class="lead">Welcome, Teacher! Here's a quick overview of your responsibilities.</p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="info-card">
+                <h4>Classes</h4>
+                <p>Manage and view class list for assigned your section.</p>
+                <a href="Classes" class="btn btn-primary">View Classes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const headerPath = '../Shared/TeacherHeader'; // Path relative to Views/Program-Head/
+
+        fetch(headerPath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('teacher-header-placeholder').innerHTML = html;
+
+                // Highlight active link in header
+                const currentPath = window.location.pathname;
+                const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
+                const navLinks = document.querySelectorAll('#navbarNavTeacher .nav-link');
+                navLinks.forEach(link => {
+                    const linkHref = link.getAttribute('href');
+                    const linkPage = linkHref.substring(linkHref.lastIndexOf('/') + 1);
+
+                    if (linkPage.toLowerCase() === currentPage.toLowerCase()) {
+                        link.classList.add('active');
+                        link.setAttribute('aria-current', 'page');
+                    } else {
+                        link.classList.remove('active');
+                        link.removeAttribute('aria-current');
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error loading Program Head header:', error);
+                document.getElementById('teacher-header-placeholder').innerHTML = '<p style="color: red; text-align: center;">Failed to load navigation.</p>';
+            });
+    });
+</script>
+</body>
+</html>
