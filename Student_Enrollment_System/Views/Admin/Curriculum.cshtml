@@ -2,9 +2,14 @@
 @{
     Layout = "~/Views/Shared/AdminHeader.cshtml";
     ViewBag.Title = "Manage Curriculum - Enrollment System";
+    var prerequisites = ViewBag.Prerequisites as List<Student_Enrollment_System.Models.Prerequisite>;
+    var prerequisitesLookup = prerequisites?
+        .GroupBy(p => p.CourseCode)
+        .ToDictionary(g => g.Key, g => g.Select(p => p.PrerequisiteCourseCode).ToList());
 }
 
 @section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 <style>
     body {
         min-height: 100vh;
@@ -25,38 +30,63 @@
         margin-bottom: 30px;
     }
 
-    .table-responsive {
-        margin-bottom: 30px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    .course-list-container th {
+        background-color: #FE7743 !important;
+        color: white;
+        font-weight: 600;
+        padding: 12px 15px;
+        text-align: left;
+        position: sticky;
+        top: 0;
     }
-
     table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
         margin-top: 15px;
+        font-size: 0.9rem;
     }
-
-    th, td {
-        border: 1px solid #000000;
-        padding: 12px;
-        text-align: left;
-    }
-
+    
     th {
-        background-color: #FE7743;
-        font-weight: 500;
+        background-color: #FE7743 !important;
         color: white;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 1px;
+        font-weight: 600;
+        padding: 12px 15px;
+        text-align: left;
+        position: sticky;
+        top: 0;
     }
 
-    tr:nth-child(even) {
-        background-color: #f9f9f9;
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: top;
     }
 
-    tr:hover {
-        background-color: rgba(254, 119, 67, 0.1);
+    tr:not(:first-child) {
+        border-top: 1px solid #e0e0e0;
+    }
+
+    tbody tr:nth-child(odd) {
+        background-color: #f8f8f8;
+    }
+
+   
+    .action-buttons .btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        margin: 2px;
+    }
+
+    thead {
+        box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Responsive table container */
+    .table-responsive {
+        border-radius: 4px;
+        overflow: hidden;
+        border: 1px solid #ddd;
     }
 
     .action-buttons {
@@ -150,26 +180,6 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <label for="semesterSelect" class="form-label">Semester:</label>
-                <select class="form-select" id="semesterSelect" name="semesterSelect">
-                    <option value="" selected disabled>Choose Semester...</option>
-                    @{
-                        var semesters = ViewBag.Semesters as List<Student_Enrollment_System.Models.Semester>;
-                        if (semesters?.Any() == true)
-                        {
-                            foreach (var sem in semesters)
-                            {
-                                <option value="@sem.Id">@sem.Name</option>
-                            }
-                        }
-                        else
-                        {
-                            <option disabled>No semesters available</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="col-md-4">
                 <label for="yearLevelSelect" class="form-label">Year Level:</label>
                 <select class="form-select" id="yearLevelSelect" name="yearLevelSelect">
                     <option value="" selected disabled>Choose Year Level...</option>
@@ -185,6 +195,26 @@
                         else
                         {
                             <option disabled>No year levels available</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="semesterSelect" class="form-label">Semester:</label>
+                <select class="form-select" id="semesterSelect" name="semesterSelect">
+                    <option value="" selected disabled>Choose Semester...</option>
+                    @{
+                        var semesters = ViewBag.Semesters as List<Student_Enrollment_System.Models.Semester>;
+                        if (semesters?.Any() == true)
+                        {
+                            foreach (var sem in semesters)
+                            {
+                                <option value="@sem.Id">@sem.Name</option>
+                            }
+                        }
+                        else
+                        {
+                            <option disabled>No semesters available</option>
                         }
                     }
                 </select>
@@ -248,18 +278,22 @@
                         <p class="fw-bold" id="modalYearSemester">-</p>
                     </div>
                 </div>
-                <div class="input-group mb-3">
+                <div class="course-search">
                     <input type="text" class="form-control" id="courseSearch" placeholder="Search courses...">
                 </div>
                 <div class="course-list-container" style="max-height: 400px; overflow-y: auto;">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th width="50px"></th>
-                                <th>Course Code</th>
-                                <th>Title</th>
-                                <th>Units</th>
-                            </tr>
+                        <tr>
+                            <th></th>
+                            <th>Course Code</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Co-/Prerequisite</th>
+                            <th>Units</th>
+                            <th>Lec Hours</th>
+                            <th>Lab Hours</th>
+                        </tr>
                         </thead>
                         <tbody id="availableCoursesList"></tbody>
                     </table>
@@ -274,35 +308,273 @@
 </div>
 
 @section Scripts {
-<script src="@Url.Content("~/Scripts/jquery-3.7.0.min.js")"></script>
-<script src="@Url.Content("~/Scripts/bootstrap.bundle.min.js")"></script>
-<script>
-    $(document).ready(function() {
-        // Highlight active nav link
-        const currentPath = window.location.pathname;
-        const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
-        const navLinks = $('#navbarNavAdmin .nav-link');
+    <script src="@Url.Content("~/Scripts/jquery-3.7.0.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.bundle.min.js")"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    @* <script src="@Url.Content("~/Scripts/MyScript/Curriculum.js")"></script> *@
+    <script>
+        $(document).ready(function () {
+            // Cache select elements
+            const $programSelect = $('#programSelect');
+            const $academicYearSelect = $('#academicYearSelect');
+            const $semesterSelect = $('#semesterSelect');
+            const $yearLevelSelect = $('#yearLevelSelect');
+            const $programDetailsTable = $('#programDetailsTable');
+            const $clearFiltersBtn = $('#clearFiltersBtn');
+            const $assignCourseModal = $('#assignCourseModal');
+            const $availableCoursesList = $('#availableCoursesList');
+            const $confirmAssign = $('#confirmAssign');
 
-        navLinks.each(function() {
-            const linkHref = $(this).attr('href');
-            const linkPage = linkHref ? linkHref.substring(linkHref.lastIndexOf('/') + 1) : '';
+            let allCourses = @Html.Raw(Json.Encode(ViewBag.Courses)) || [];
+            let prerequisitesLookup = @Html.Raw(Json.Encode(ViewBag.Prerequisites)) || [];
 
-            if (linkPage.toLowerCase() === currentPage.toLowerCase()) {
-                $(this).addClass('active').attr('aria-current', 'page');
-            } else {
-                $(this).removeClass('active').removeAttr('aria-current');
+            // Store selected courses in a Set
+            let selectedCoursesToAssign = new Set();
+
+            // Event listeners for filter changes
+            $programSelect.add($academicYearSelect).add($semesterSelect).add($yearLevelSelect)
+                .on('change', checkSelections);
+
+            // Clear filters button
+            $clearFiltersBtn.on('click', function () {
+                $programSelect.val('');
+                $academicYearSelect.val('');
+                $semesterSelect.val('');
+                $yearLevelSelect.val('');
+                $programDetailsTable.hide();
+                $(this).hide();
+                $('#selectedProgramTitle').text('');
+            });
+
+            // Load courses when selections are made
+            function checkSelections() {
+                const allSelected = $programSelect.val() &&
+                    $academicYearSelect.val() &&
+                    $semesterSelect.val() &&
+                    $yearLevelSelect.val();
+
+                if (allSelected) {
+                    $programDetailsTable.show();
+                    $clearFiltersBtn.show();
+                    $('#selectedProgramTitle').text(`Program: ${$programSelect.find('option:selected').text()}`);
+                    loadCurriculumCourses(); // Load courses
+                } else {
+                    $programDetailsTable.hide();
+                    $clearFiltersBtn.hide();
+                }
             }
-        });
 
-        // Add hover effects
-        $('table tbody tr').hover(
-            function() {
-                $(this).css('background-color', 'rgba(254, 119, 67, 0.1)');
-            },
-            function() {
-                $(this).css('background-color', '');
+            // Update modal title with selected values
+            $assignCourseModal.on('show.bs.modal', function () {
+                const programName = $programSelect.find('option:selected').text();
+                const academicYear = $academicYearSelect.find('option:selected').text();
+                const semester = $semesterSelect.find('option:selected').text();
+                const yearLevel = $yearLevelSelect.find('option:selected').text();
+
+                $('#modalProgramName').text(programName);
+                $('#modalYearSemester').text(`${yearLevel} - ${semester} (${academicYear})`);
+
+                // Reset search and show all courses
+                $('#courseSearch').val('');
+                renderCourses(allCourses);
+            });
+
+            // Render available courses
+            function renderCourses(courses) {
+                const $tableBody = $availableCoursesList;
+                $tableBody.empty();
+
+                if (courses.length === 0) {
+                    $tableBody.append('<tr><td colspan="8" class="text-center">No courses found</td></tr>');
+                    return;
+                }
+
+                const prerequisitesDict = {};
+                prerequisitesLookup.forEach(function (item) {
+                    if (!prerequisitesDict[item.CourseCode]) {
+                        prerequisitesDict[item.CourseCode] = [];
+                    }
+                    prerequisitesDict[item.CourseCode].push(item.PrerequisiteCourseCode);
+                });
+
+                courses.forEach(function (course) {
+                    const prereqs = prerequisitesDict[course.Code] || [];
+                    const prereqDisplay = prereqs.length > 0 ? prereqs.join(", ") : '-';
+                    $tableBody.append(`
+                <tr>
+                    <td><input type="checkbox" class="course-checkbox" value="${course.Code}"></td>
+                    <td>${course.Code}</td>
+                    <td>${course.Title}</td>
+                    <td>${course.CategoryCode}</td>
+                    <td>${prereqDisplay}</td>
+                    <td>${course.Units}</td>
+                    <td>${course.LecHours}</td>
+                    <td>${course.LabHours}</td>
+                </tr>
+            `);
+                });
             }
-        );
+
+            // Search functionality
+            $('#courseSearch').on('input', function () {
+                const term = $(this).val().toLowerCase();
+                const filtered = allCourses.filter(course =>
+                    course.Code.toLowerCase().includes(term) ||
+                    course.Title.toLowerCase().includes(term) ||
+                    (course.CategoryCode && course.CategoryCode.toLowerCase().includes(term))
+                );
+                renderCourses(filtered);
+            });
+
+            // Checkbox handler
+            $availableCoursesList.on('change', '.course-checkbox', function () {
+                const courseCode = $(this).val();
+                if ($(this).is(':checked')) {
+                    selectedCoursesToAssign.add(courseCode);
+                } else {
+                    selectedCoursesToAssign.delete(courseCode);
+                }
+            });
+
+            // Assign courses
+            $confirmAssign.on('click', function () {
+                selectedCoursesToAssign.clear();
+                $('#availableCoursesList input.course-checkbox:checked').each(function () {
+                    const code = $(this).val();
+                    if (code) selectedCoursesToAssign.add(code);
+                });
+
+                if (selectedCoursesToAssign.size === 0) {
+                    Swal.fire('Error', 'Please select at least one course.', 'error');
+                    return;
+                }
+
+                const prog = $programSelect.val();
+                const year = $yearLevelSelect.val();
+                const semester = $semesterSelect.val();
+                const ay = $academicYearSelect.val();
+
+                if (!prog || !year || !semester || !ay) {
+                    Swal.fire('Error', 'Please complete all filters before assigning.', 'error');
+                    return;
+                }
+
+                const curCode = `${prog}(${ay})`;
+
+                const dataToSend = {
+                    curriculum: {
+                        Code: curCode,
+                        ProgramCode: prog,
+                        AcademicYear: ay
+                    },
+                    curriculumCourses: Array.from(selectedCoursesToAssign).map(code => ({
+                        CurriculumCode: curCode,
+                        CourseCode: code,
+                        YearLevel: year,
+                        Semester: semester
+                    }))
+                };
+
+                $.ajax({
+                    url: '/Admin/Curriculum/AssignCourses',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataToSend),
+                    success: function (response) {
+                        if (response.mess) {
+                            Swal.fire('Success!', 'Courses assigned successfully.', 'success')
+                                .then(() => $assignCourseModal.modal('hide'));
+                            loadCurriculumCourses();
+                        } else {
+                            Swal.fire('Error', response.error || 'Failed to assign courses.', 'error');
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.fire('Error', xhr.responseJSON?.error || 'An error occurred.', 'error');
+                    }
+                });
+            });
+
+            // Load curriculum courses via AJAX
+            function loadCurriculumCourses() {
+                const progCode = $programSelect.val();
+                const ayCode = $academicYearSelect.val();
+                const semester = $semesterSelect.val();
+                const yearLevel = $yearLevelSelect.val();
+
+                if (!progCode || !ayCode || !semester || !yearLevel) return;
+
+                const curriculumCode = `${progCode}(${ayCode})`;
+
+                $.ajax({
+                    url: '/Admin/Curriculum/GetCurriculumCourses',
+                    method: 'GET',
+                    data: { curriculumCode, semester, yearLevel },
+                    success: function(response) {
+                        console.log('Courses loaded:', response);
+                        updateCoursesTable(response);
+                    },
+                    error: function(xhr) {
+                        console.error('Error loading courses:', xhr.responseText);
+                        Swal.fire('Error', 'Failed to load curriculum courses.', 'error');
+                    }
+                });
+            }
+
+            // Update table with curriculum courses
+            function updateCoursesTable(courses) {
+                const $tbody = $('#programTableBody');
+                $tbody.empty();
+
+                if (!courses || courses.length === 0) {
+                    $tbody.append(`<tr><td colspan="8" class="no-courses">No courses found.</td></tr>`);
+                    return;
+                }
+
+                const prerequisitesMap = {};
+                prerequisitesLookup.forEach(p => {
+                    if (!prerequisitesMap[p.CourseCode]) prerequisitesMap[p.CourseCode] = [];
+                    prerequisitesMap[p.CourseCode].push(p.PrerequisiteCourseCode);
+                });
+
+                courses.forEach(course => {
+                    const prereqs = prerequisitesMap[course.Code] || [];
+                    const prereqDisplay = prereqs.length ? prereqs.join(', ') : 'None';
+
+                    $tbody.append(`
+                <tr>
+                    <td>${course.Code}</td>
+                    <td>${course.Title}</td>
+                    <td>${prereqDisplay}</td>
+                    <td>${course.Units}</td>
+                    <td>${course.LecHours}</td>
+                    <td>${course.LabHours}</td>
+                    <td>${course.LecHours + course.LabHours}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-sm btn-primary edit-btn" data-id="${course.Code}">Edit</button>
+                        <button class="btn btn-sm btn-danger delete-btn" data-id="${course.Code}">Delete</button>
+                    </td>
+                </tr>
+            `);
+                });
+
+                // Attach event handlers for edit/delete
+                $('.edit-btn').on('click', function () {
+                    const code = $(this).data('id');
+                    console.log('Edit course:', code);
+                    // Implement actual edit logic
+                });
+
+                $('.delete-btn').on('click', function () {
+                    const code = $(this).data('id');
+                    console.log('Delete course:', code);
+                    // Implement actual delete logic
+                });
+            }
+
+            // Initial call
+            checkSelections();
     });
 </script>
 }

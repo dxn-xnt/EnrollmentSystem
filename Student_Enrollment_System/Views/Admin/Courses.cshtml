@@ -168,11 +168,11 @@
                                 <td>@course.LecHours</td>
                                 <td>@course.LabHours</td>
                                 <td class="action-buttons">
-                                    @Html.ActionLink("Edit", "EditCourse", "Admin", new { id = course.Code }, new {
+                                    @Html.ActionLink("Edit", "Edit", "Course", new { id = course.Code }, new {
                                         @class = "btn-warning",
                                         title = "Edit this course"
                                     })
-                                    @Html.ActionLink("Delete", "DeleteCourse", "Admin", new { id = course.Code }, new {
+                                    @Html.ActionLink("Delete", "Delete", "Course", new { id = course.Code }, new {
                                         @class = "btn-danger",
                                         onclick = "return confirm('Are you sure you want to delete this course?');",
                                         title = "Delete this course"
