@@ -54,11 +54,11 @@
                        href="@Url.Action("Dashboard", "Admin")">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Curriculums" ? "active" : "")"
-                       href="@Url.Action("Curriculums", "Admin")">Curriculum</a>
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Curriculum" ? "active" : "")"
+                       href="@Url.Action("Index", "Curriculum")">Curriculum</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")"
+                    <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Course" ? "active" : "")"
                        href="@Url.Action("Index", "Course")">Courses</a>
                 </li>
                 <li class="nav-item">

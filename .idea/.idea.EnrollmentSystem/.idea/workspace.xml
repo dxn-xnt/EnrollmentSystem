@@ -8,166 +8,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81c7735a-1533-4594-ab7a-c9f3ef233cf9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-grid.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-grid.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-grid.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-grid.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-grid.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-grid.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-grid.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-grid.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-reboot.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-reboot.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-reboot.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-reboot.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-reboot.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-reboot.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-reboot.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-reboot.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-utilities.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-utilities.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-utilities.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-utilities.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-utilities.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-utilities.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-utilities.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-utilities.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.min.css-x" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.rtl.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.rtl.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.rtl.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.rtl.min.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/signin.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/AccountController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/AddCourseController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/AdminController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/CourseController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/ProfessorController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/ProgramHeadController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/StudentController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/EnrollmentDB_Queries.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/AcademicYear.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/BlockSection.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/CourseCategory.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/CurriculumCourse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/EnrollingCourse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/FacultyAccount.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Prerequisite.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Program.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Semester.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/TimeSlot.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/YearLevel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/JQuery/jquery.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/MyScript/AddCourse.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/MyScript/FacultyLogIn.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/MyScript/LogIn.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/MyScript/SignUp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/MyScript/StudentEnroll.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/bootstrap.bundle.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/bootstrap.bundle.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/bootstrap.bundle.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/bootstrap.bundle.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/bootstrap.esm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/bootstrap.min.css-x" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/jquery-3.7.0.intellisense.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/jquery-3.7.0.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/jquery-3.7.0.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/jquery-3.7.0.slim.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Student_Enrollment_System.csproj.user" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Utilities/PasswordUtil.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Account/FacultyLogin.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Account/SignUp.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Account/StudentLogin.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/AddCourse.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Courses.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Curriculum.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Dashboard.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/EditCourse.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Home/Indexorig.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Professor/Classes.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Professor/Dashboard.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/ClassManagement.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/Dashboard.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/EnrollmentApproval.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/SetSchedules.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/StudentManagement.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/ViewStudentList.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/AdminHeader.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/ProfessorHeader.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/ProgramHeadHeader.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/StudentHeader.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/ClassSchedule.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/Dashboard.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/StudentEnroll.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/StudentProfile.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/ViewGrades.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/CurriculumController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/CurriculumAssignmentRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/MyScript/Curriculum.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.EnrollmentSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.EnrollmentSystem/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/App_Start/RouteConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/App_Start/RouteConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Content/Site.css" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/Site.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-theme.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-theme.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-theme.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap-theme.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.min.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/HomeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Course.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Course.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/CourseTaken.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/CourseTaken.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Curriculum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Curriculum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Enrollment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Enrollment.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Professor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Professor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Room.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Room.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Schedule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Schedule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Student.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Student.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/bootstrap.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/jquery.validate-vsdoc.js" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/jquery.validate-vsdoc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/jquery.validate.js" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/jquery.validate.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/AdminController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/AdminController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Global.asax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Global.asax.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Student_Enrollment_System.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Student_Enrollment_System.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Home/About.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Home/About.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Home/Contact.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Home/Contact.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Home/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/Error.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/Error.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Web.config" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Web.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/_ViewStart.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/_ViewStart.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Courses.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Courses.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Curriculum.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Curriculum.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/AdminHeader.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/AdminHeader.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Web.config" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Web.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/Microsoft.Web.Infrastructure.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/Microsoft.Web.Infrastructure.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.Helpers.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.Helpers.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.Mvc.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.Mvc.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.Razor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.Razor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.WebPages.Deployment.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.WebPages.Deployment.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.WebPages.Razor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.WebPages.Razor.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.WebPages.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/System.Web.WebPages.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.CSharp.Scripting.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.CSharp.Scripting.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.Scripting.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.Scripting.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.CodeAnalysis.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.Managed.Core.targets" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/Microsoft.Managed.Core.targets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/System.Collections.Immutable.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/System.Collections.Immutable.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/System.IO.Pipes.AccessControl.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/System.IO.Pipes.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/System.Reflection.Metadata.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/System.Reflection.Metadata.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/System.Security.AccessControl.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/System.Security.Claims.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/System.Security.Principal.Windows.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/VBCSCompiler.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/VBCSCompiler.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/VBCSCompiler.exe.config" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/VBCSCompiler.exe.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/csc.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/csc.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/csc.exe.config" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/csc.exe.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/csi.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/csi.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/csi.exe.config" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/csi.exe.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/vbc.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/vbc.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/vbc.exe.config" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/roslyn/vbc.exe.config" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.AssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.FileListAbsolute.txt" afterDir="false" />
@@ -315,7 +169,8 @@
       <workItem from="1748148289109" duration="8700000" />
       <workItem from="1748162392984" duration="13442000" />
       <workItem from="1748251151634" duration="21986000" />
-      <workItem from="1748286188170" duration="868000" />
+      <workItem from="1748286188170" duration="8130000" />
+      <workItem from="1748314804745" duration="19368000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -325,7 +180,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746459790921</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Initial Commit">
+      <option name="closed" value="true" />
+      <created>1748287284180</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1748287284180</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

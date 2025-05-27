@@ -55,31 +55,44 @@ namespace Student_Enrollment_System
             
             //Admin Routes
             routes.MapRoute(
-                name: "AdminCourseRoute",
-                url: "Admin/Course",
-                defaults: new { controller = "Course", action = "Index" }
-            ); 
-            routes.MapRoute(
                 name: "AdminEditCourseRoute",
                 url: "Admin/Course/EditCourse",
                 defaults: new { controller = "Course", action = "Delete" }
-            );
-            routes.MapRoute(
-                name: "AdminCurriculumRoute",
-                url: "Admin/Curriculum",
-                defaults: new { controller = "Admin", action = "Curriculums" }
             );
             routes.MapRoute(
                 name: "MainAdminRoute",
                 url: "Admin/Dashboard",
                 defaults: new { controller = "Admin", action = "Dashboard" }
             );
+            
             //Course Routes
             routes.MapRoute(
                 name: "AdminAddCourseRoute",
                 url: "Admin/Course/AddCourse",
                 defaults: new { controller = "AddCourse", action = "Index" }
             );
+            routes.MapRoute(
+                name: "AdminCourseRoute",
+                url: "Admin/Course",
+                defaults: new { controller = "Course", action = "Index" }
+            ); 
+            
+            //Curriculum Routes
+            routes.MapRoute(
+                name: "AdminCurriculumRoute",
+                url: "Admin/Curriculum",
+                defaults: new { controller = "Curriculum", action = "Index" }
+            ); 
+            routes.MapRoute(
+                name: "AdminAssignCourseRoute",
+                url: "Admin/Curriculum/AssignCourses",
+                defaults: new { controller = "Curriculum", action = "AssignCourses" }
+            ); 
+            routes.MapRoute(
+                name: "AdminGetCourseRoute",
+                url: "Admin/Curriculum/GetCurriculumCourses",
+                defaults: new { controller = "Curriculum", action = "GetCurriculumCourses" }
+            ); 
             
             
             //Student Routes

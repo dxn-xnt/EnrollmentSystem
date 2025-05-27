@@ -195,6 +195,15 @@
         <Reference Include="Newtonsoft.Json">
             <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
         </Reference>
+        <Reference Include="Unity.Abstractions, Version=5.11.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+          <HintPath>..\packages\Unity.Abstractions.5.11.7\lib\net47\Unity.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+          <HintPath>..\packages\Unity.5.11.1\lib\net47\Unity.Container.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.Mvc5, Version=1.4.0.0, Culture=neutral, PublicKeyToken=43da31bc42a85347, processorArchitecture=MSIL">
+          <HintPath>..\packages\Unity.Mvc5.1.4.0\lib\net45\Unity.Mvc5.dll</HintPath>
+        </Reference>
         <Reference Include="WebGrease">
             <Private>True</Private>
             <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -208,10 +217,12 @@
         <Compile Include="App_Start\BundleConfig.cs" />
         <Compile Include="App_Start\FilterConfig.cs" />
         <Compile Include="App_Start\RouteConfig.cs" />
+        <Compile Include="App_Start\UnityConfig.cs" />
         <Compile Include="Controllers\AccountController.cs" />
         <Compile Include="Controllers\AddCourseController.cs" />
         <Compile Include="Controllers\AdminController.cs" />
         <Compile Include="Controllers\CourseController.cs" />
+        <Compile Include="Controllers\CurriculumController.cs" />
         <Compile Include="Controllers\HomeController.cs" />
         <Compile Include="Controllers\StudentController.cs" />
         <Compile Include="Controllers\ProfessorController.cs" />
@@ -225,6 +236,7 @@
         <Compile Include="Models\CourseCategory.cs" />
         <Compile Include="Models\CourseTaken.cs" />
         <Compile Include="Models\Curriculum.cs" />
+        <Compile Include="Models\CurriculumAssignmentRequest.cs" />
         <Compile Include="Models\CurriculumCourse.cs" />
         <Compile Include="Models\EnrollingCourse.cs" />
         <Compile Include="Models\Enrollment.cs" />
@@ -308,6 +320,7 @@
         <Content Include="Scripts\JQuery\jquery.js" />
         <Content Include="Scripts\modernizr-2.8.3.js" />
         <Content Include="Scripts\MyScript\AddCourse.js" />
+        <Content Include="Scripts\MyScript\Curriculum.js" />
         <Content Include="Scripts\MyScript\LogIn.js" />
         <Content Include="Scripts\MyScript\FacultyLogIn.js" />
         <Content Include="Scripts\MyScript\SignUp.js" />
@@ -356,6 +369,7 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="App_Data" />
+        <Folder Include="Services\" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="fonts\glyphicons-halflings-regular.woff2" />
