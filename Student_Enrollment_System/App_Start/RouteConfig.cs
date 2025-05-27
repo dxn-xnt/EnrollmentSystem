@@ -23,12 +23,12 @@ namespace Student_Enrollment_System
             routes.MapRoute(
                 name: "ProgramHeadSetScheduleListRoute",
                 url: "Head/Schedules",
-                defaults: new { controller = "ProgramHead", action = "Schedule" }
+                defaults: new { controller = "ProgramHead", action = "Schedules" }
             );
             routes.MapRoute(
                 name: "ProgramHeadEnrollmentApprovalListRoute",
                 url: "Head/EnrollmentApproval",
-                defaults: new { controller = "ProgramHead", action = "Approval" }
+                defaults: new { controller = "ProgramHead", action = "Enrollments" }
             );
             routes.MapRoute(
                 name: "ProgramHeadViewStudentListRoute",

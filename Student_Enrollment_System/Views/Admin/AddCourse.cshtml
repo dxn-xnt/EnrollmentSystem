@@ -101,7 +101,6 @@
     <div class="form-card">
         <form id="addCourseForm" method="post" data-ajax-url="@Url.Action("Index", "AddCourse")">
             @Html.AntiForgeryToken()
-            <div id="formMessage" class="d-none"></div>
 
             <!-- Course Category + Code in one line -->
             <div class="row g-3 mb-4">
@@ -130,8 +129,8 @@
                     <div class="input-group w-100">
                         <span class="input-group-text course-code-prefix" id="courseCodePrefix">[Category]</span>
                         <input type="text" class="form-control w-100 course-code-input" id="courseCode" name="Crs_Code"
-                               placeholder="e.g., 101" required pattern="[0-9]{3}"
-                               title="Course number should be 3 digits (e.g., 101)">
+                               placeholder="e.g., 101 or 101 L" required pattern="[0-9]{3}( [A-Za-z])?"
+                               title="Course number should be 3 digits optionally followed by space and a single letter (e.g., 101 or 101 L)">
                     </div>
                     <small class="text-muted">Full code: <span id="fullCourseCodePreview" class="fw-bold">[Category][Number]</span></small>
                 </div>
@@ -164,20 +163,17 @@
 
             <!-- Units in one line -->
             <div class="row g-3 mb-4">
-                <div class="col-md-4">
-                    <label for="numberOfUnits" class="form-label">Total Units:</label>
-                    <input type="number" class="form-control w-100" id="numberOfUnits" name="Crs_Units"
-                           min="1" max="6" value="3" required>
+                <div class="col-md-6">
+                    <label for="numberOfUnits" class="form-label">No. of Units:</label>
+                    <input type="number" class="form-control" id="numberOfUnits" name="Crs_Units" min="1" max="6" value="3" required>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="lecUnits" class="form-label">Lecture Units:</label>
-                    <input type="number" class="form-control w-100" id="lecUnits" name="Crs_Lec"
-                           min="0" value="2" required>
+                    <input type="number" class="form-control" id="lecUnits" name="Crs_Lec" min="0" value="2" required>
                 </div>
-                <div class="col-md-4">
-                    <label for="labUnits" class="form-label">Lab Units:</label>
-                    <input type="number" class="form-control w-100" id="labUnits" name="Crs_Lab"
-                           min="0" value="1" required>
+                <div class="col-md-6">
+                    <label for="labUnits" class="form-label">Laboratory Units:</label>
+                    <input type="number" class="form-control" id="labUnits" name="Crs_Lab" min="0" value="1" required>
                 </div>
             </div>
 
@@ -206,7 +202,7 @@
             width: '100%',
             allowClear: true
         });
-
+        
         // Update course code prefix when category changes
         $('#courseCategory').change(function () {
             const selectedCategory = $(this).find('option:selected');
@@ -222,7 +218,7 @@
         function updateFullCourseCodePreview() {
             const categoryCode = $('#courseCategory').val() || '';
             const courseCode = $('#courseCode').val() || '';
-            $('#fullCourseCodePreview').text(categoryCode + courseCode);
+            $('#fullCourseCodePreview').text(categoryCode +' '+ courseCode);
         }
         // Initialize the preview
         updateFullCourseCodePreview();

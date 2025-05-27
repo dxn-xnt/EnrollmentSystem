@@ -6,16 +6,10 @@
         const units = parseInt($('#numberOfUnits').val()) || 0;
         const lec = parseInt($('#lecUnits').val()) || 0;
         const lab = parseInt($('#labUnits').val()) || 0;
-
-        if (lec + lab !== units) {
-            $('#formMessage').removeClass('d-none alert-success').addClass('alert-danger')
-                .html('<i class="bi bi-exclamation-triangle"></i> Lecture + Lab units must exactly equal Total Units');
-            return false;
-        }
-
+        
         // Prepare data
         const courseData = {
-            Code: $('#courseCategory').val() + $('#courseCode').val(),
+            Code: $('#courseCategory').val() +' '+ $('#courseCode').val(),
             Title: $('#descriptiveTitle').val(),
             Units: units,
             LecHours: lec,

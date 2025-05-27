@@ -1,5 +1,5 @@
 @{
-    ViewBag.Title = "Professor Dashboard";
+    ViewBag.Title = "Program Head Dashboard";
     Layout = "~/Views/Shared/ProgramHeadHeader.cshtml";
 }
 
@@ -9,9 +9,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
-    <!-- Add jQuery before Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.min.css")">
+    <!-- Custom Styles -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -21,33 +21,45 @@
             flex-direction: column;
         }
 
-        /* Hide scrollbar */
-        body::-webkit-scrollbar {
-            display: none;
-        }
-
         .content-section {
             padding: 30px;
             flex-grow: 1;
         }
 
-        .info-card {
-            background-color: #ffffff;
-            padding: 20px;
+        .dashboard-card {
+            background-color: white;
+            padding: 25px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
-            text-align: center; /* Centered text for cleaner look without icons */
+            height: 100%;
+            transition: transform 0.3s ease;
         }
 
-        .info-card h4 {
-            color: #007bff;
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-card h4 {
+            color: #273F4F;
             margin-bottom: 15px;
+            font-weight: 600;
         }
 
-        .info-card p {
-            font-size: 1.1em;
+        .dashboard-card p {
             color: #555;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #273F4F;
+            border-color: #273F4F;
+        }
+
+        .btn-primary:hover {
+            background-color: #1a2b38;
+            border-color: #1a2b38;
         }
     </style>
 </head>
@@ -57,19 +69,19 @@
 
 <div class="container content-section">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Students</h1>
+        <h1 class="mb-0">Student & Class Management</h1>
     </div>
 
     <div class="row">
-        <div class="col-md-4">
-            <div class="info-card">
-                <h4>Student List</h4>
-                <p>Review and approve pending student enrollments.</p>
-                <a href="@Url.Action("Students", "ProgramHead")" class="btn btn-primary">View All Students</a>
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h4>Student Management</h4>
+                <p>Review and approve pending student enrollments and manage student records.</p>
+                <a href="@Url.Action("Students", "ProgramHead")" class="btn btn-primary">Manage Students</a>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="info-card">
+        <div class="col-md-6">
+            <div class="dashboard-card">
                 <h4>Class Management</h4>
                 <p>Manage and set course schedules for your program.</p>
                 <a href="@Url.Action("ClassManagement", "ProgramHead")" class="btn btn-primary">Manage Classes</a>
@@ -78,47 +90,8 @@
     </div>
 </div>
 
-<!-- JavaScript files in correct order -->
-<script src="~/Content/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js "></script>
-<!-- Then load Bootstrap bundle (includes Popper.js) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const headerPath = '@Url.Content("~/Views/Shared/_ProgramHeadHeader.cshtml")';
-
-        fetch(headerPath)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then(html => {
-                document.getElementById('programhead-header-placeholder').innerHTML = html;
-
-                // Highlight active link in header
-                const currentPath = window.location.pathname;
-                const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
-                const navLinks = document.querySelectorAll('#navbarNavProgramHead .nav-link');
-                navLinks.forEach(link => {
-                    const linkHref = link.getAttribute('href');
-                    const linkPage = linkHref.substring(linkHref.lastIndexOf('/') + 1);
-
-                    if (linkPage.toLowerCase() === currentPage.toLowerCase()) {
-                        link.classList.add('active');
-                        link.setAttribute('aria-current', 'page');
-                    } else {
-                        link.classList.remove('active');
-                        link.removeAttribute('aria-current');
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Error loading Program Head header:', error);
-                document.getElementById('programhead-header-placeholder').innerHTML = '<p style="color: red; text-align: center;">Failed to load navigation.</p>';
-            });
-    });
-</script>
+<!-- JavaScript files -->
+<script src="@Url.Content("~/Scripts/bootstrap.bundle.min.js")"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

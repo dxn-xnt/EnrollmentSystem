@@ -24,5 +24,8 @@ namespace Student_Enrollment_System.Models
         public Boolean IsFirstGen { get; set; }
         public string Status { get; set; }
         public string Password { get; set; }
+        public string ProgramCode { get; set; }
+        public string BlockSection { get; set; }
+        
     }
 }

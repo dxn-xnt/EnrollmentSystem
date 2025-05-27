@@ -11,6 +11,10 @@
     @Scripts.Render("~/bundles/modernizr")
 
     <style>
+        html{
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
         body {
             font-family: 'Montserrat', sans-serif;
         }
@@ -67,7 +71,7 @@
                        href="@Url.Action("Grade", "Student")">View Grades</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Login", "Login")">Logout</a>
+                    <a class="nav-link" href="@Url.Action("Index", "Home")">Logout</a>
                 </li>
             </ul>
         </div>
