@@ -65,39 +65,40 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
                 <div class="col-md-3">
                     <label for="schoolYear" class="form-label">School Year</label>
                     <select class="form-select" id="schoolYear" name="enrollmentSemester">
-                        <option value="" selected disabled>Choose Academic Year...</option>
+                        <option selected disabled>Select School Year</option>
                         @{
-                        var academicYears = ViewBag.AcademicYears as List<Student_Enrollment_System.Models.AcademicYear>;
-                        if (academicYears?.Any() == true)
-                        {
-                        foreach (var year in academicYears)
-                        {
-                        <option value="@year.Code">@year.StartYear - @year.EndYear</option>
-                        }
-                        }
-                        else
-                        {
-                        <option disabled>No academic years available</option>
-                        }
+                            var academicYears = ViewBag.AcademicYears as List<Student_Enrollment_System.Models.AcademicYear>;
+                            if (academicYears?.Any() == true)
+                            {
+                                foreach (var year in academicYears)
+                                {
+                                    <option value="@year.Code">@year.StartYear - @year.EndYear</option>
+                                }
+                            }
+                            else
+                            {
+                                <option disabled>No academic years available</option>
+                            }
                         }
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="enrollmentSemester" class="form-label">Semester</label>
                     <select class="form-select" id="enrollmentSemester" name="enrollmentSemester">
+                        <option selected disabled>Select Semester</option>
                         @{
-                        var semesters = ViewBag.Semesters as List<Student_Enrollment_System.Models.Semester>;
-                        if (semesters?.Any() == true)
-                        {
-                        foreach (var sem in semesters)
-                        {
-                        <option value="@sem.Id">@sem.Name</option>
-                        }
-                        }
-                        else
-                        {
-                        <option disabled>No semesters available</option>
-                        }
+                            var semesters = ViewBag.Semesters as List<Student_Enrollment_System.Models.Semester>;
+                            if (semesters?.Any() == true)
+                            {
+                                foreach (var sem in semesters)
+                                {
+                                    <option value="@sem.Id">@sem.Name</option>
+                                }
+                            }
+                            else
+                            {
+                                <option disabled>No semesters available</option>
+                            }
                         }
                     </select>
                 </div>
@@ -150,34 +151,35 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
                 <div class="col-md-3">
                     <label for="yearLevel" class="form-label">Year Level</label>
                     <select class="form-select" id="yearLevel" name="yearLevel">
+                        <option selected disabled>Select Year Level</option>
                         @{
-                        var yearLevels = ViewBag.YearLevels as List<Student_Enrollment_System.Models.YearLevel>;
-                        if (yearLevels?.Any() == true)
-                        {
-                        foreach (var yearLevel in yearLevels)
-                        {
-                        <option value="@yearLevel.Id">@yearLevel.Title</option>
-                        }
-                        }
+                            var yearLevels = ViewBag.YearLevels as List<Student_Enrollment_System.Models.YearLevel>;
+                            if (yearLevels?.Any() == true)
+                            {
+                                foreach (var yearLevel in yearLevels)
+                                {
+                                    <option value="@yearLevel.Id">@yearLevel.Title</option>
+                                }
+                            }
                         }
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="program" class="form-label">Program</label>
                     <select class="form-select" id="program" name="program">
-                        <option value="" selected disabled>Choose Program...</option>
+                        <option selected disabled>Select Program</option>
                         @{
                             var programs = ViewBag.Programs as List<Student_Enrollment_System.Models.Program>;
-                            }
-                            @if (programs != null && programs.Any())
+                        }
+                        @if (programs != null && programs.Any())
+                        {
+                            foreach (var program in programs)
                             {
-                                foreach (var program in programs)
-                                {
                                 <option value="@program.Code">@program.Title</option>
-                                }
                             }
-                            else
-                            {
+                        }
+                        else
+                        {
                             <option disabled>No programs found</option>
                         }
                     </select>
@@ -267,6 +269,8 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
 @section Scripts {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
         let selectedCourses = [];
@@ -507,7 +511,7 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
                 const $radioDiv = $('<div class="form-check"></div>');
                 const $radio = $(`<input class="form-check-input" type="radio" name="scheduleOption" id="schedule${schedule.ScheduleId}" value="${schedule.ScheduleId}">`);
                 const $label = $(`<label class="form-check-label" for="schedule${schedule.ScheduleId}">Select</label>`);
-
+                console.log(schedule.ScheduleId);
                 // Check for schedule conflicts
                 const hasConflict = schedule.TimeSlots.some(slot =>
                     checkScheduleConflict(slot, selectedCourses)
@@ -530,9 +534,9 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
 
             // Set up modal buttons
             $modal.find('.btn-primary').off('click').on('click', function() {
-                const selectedSchedule = $modalBody.find('input[name="scheduleOption"]:checked').val();
+                const scheduleId = $modalBody.find('input[name="scheduleOption"]:checked').val();
 
-                if (!selectedSchedule) {
+                if (!scheduleId) {
                     alert('Please select a schedule option');
                     return;
                 }
@@ -540,7 +544,7 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
                 // Add the selected course and schedule
                 selectedCourses.push({
                     code: courseCode,
-                    scheduleDetails: selectedSchedule
+                    scheduleDetails: scheduleId
                 });
 
                 updateSelectedSubjectsTable();
@@ -559,7 +563,7 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
                 const schedule = courseInfo.ScheduleDetails.find(s => s.ScheduleId === course.scheduleDetails);
                 if (!schedule) continue;
 
-                for (const existingSlot of schedule.timeSlots) {
+                for (const existingSlot of schedule.TimeSlots) {
                     if (existingSlot.Day === newSlot.Day) {
                         const newStart = newSlot.StartTime.Hours * 60 + newSlot.StartTime.Minutes;
                         const newEnd = newSlot.EndTime.Hours * 60 + newSlot.EndTime.Minutes;
@@ -586,57 +590,81 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
         });
 
 
-        // Form submission handler
+        function validateFormInputs() {
+            const requiredFields = [
+                '#Id', '#FirstName', '#LastName', '#HomeAddress',
+                '#Contact', '#Email', '#yearLevel', '#program',
+                '#enrollmentSemester', '#studentStatus', '#blockSection',
+                '#enrollmentStatus'
+            ];
+
+            for (const field of requiredFields) {
+                if (!$(field).val() || $(field).val().trim() === '') {
+                    // Highlight the empty field
+                    $(field).addClass('is-invalid');
+                    // Return field ID for error message
+                    return { isValid: false, field: field };
+                }
+                $(field).removeClass('is-invalid');
+            }
+
+            // Validate at least one course selected
+            if (selectedCourses.size === 0) {
+                return { isValid: false, field: 'courses', message: 'Please select at least one course.' };
+            }
+
+            return { isValid: true };
+        }
+
         $('#enrollmentForm').submit(function(e) {
             e.preventDefault();
 
-            // Validate at least one course is selected
-            if (selectedCourses.length === 0) {
+            // Validate all required inputs
+            const validation = validateFormInputs();
+            if (!validation.isValid) {
+                const errorMessage = validation.message || `Please fill in all required fields. Missing: ${validation.field}`;
                 Swal.fire({
                     title: 'Error',
-                    text: 'Please select at least one course before submitting.',
+                    text: errorMessage,
                     icon: 'error'
                 });
                 return;
             }
-            
-            const studentId = parseInt($('#Id').val());
-            const semesterId = parseInt($('#enrollmentSemester').val());
-            const yearLevel = parseInt($('#yearLevel').val());
-            // Collect form values
+
+            // Prepare form data (no parseInt needed since backend expects strings)
             const formData = {
-                Student : {
-                    Id: studentId,
-                    FirstName: $('#FirstName').val(),
-                    LastName: $('#LastName').val(),
-                    MiddleName: $('#MiddleName').val(),
-                    HomeAddress: $('#HomeAddress').val(),
-                    Contact: $('#Contact').val(),
-                    Email: $('#Email').val(),
-                    YearLevel:yearLevel,
+                Student: {
+                    Id: $('#Id').val(),
+                    FirstName: $('#FirstName').val().trim(),
+                    LastName: $('#LastName').val().trim(),
+                    MiddleName: $('#MiddleName').val()?.trim() || null, // Optional field
+                    HomeAddress: $('#HomeAddress').val().trim(),
+                    Contact: $('#Contact').val().trim(),
+                    Email: $('#Email').val().trim(),
+                    YearLevel: $('#yearLevel').val(),
                     Program: $('#program').val(),
-                    Semester: semesterId,
+                    Semester: $('#enrollmentSemester').val(),
                     Status: $('#studentStatus').val(),
                     BlockSection: $('#blockSection').val(),
                 },
                 Enrollment: {
                     EnrollmentStatus: $('#enrollmentStatus').val(),
-                    AcademicYear: academicYear,
-                    StudentId: studentId,
-                    Semester: semesterId,
-                    YearLevel: yearLevel,
+                    AcademicYear: academicYear, // Assuming this is defined elsewhere
+                    StudentId: $('#Id').val(),
+                    Semester: $('#enrollmentSemester').val(),
+                    YearLevel: $('#yearLevel').val(),
                 },
-                EnrollingCourses : Array.from(selectedCourses).map(code => ({
-                        CourseCode: code.code,
-                        ScheduleId: parseInt(code.scheduleDetails.ScheduleId)
-                    }))
-                
-                
+                EnrollingCourses: Array.from(selectedCourses).map(course => ({
+                    CourseCode: course.code,
+                    ScheduleId: course.scheduleDetails || null // Handle optional schedule
+                }))
             };
+            
+            console.log('Form data:', formData);
 
             // Submit via AJAX
             $.ajax({
-                url: '/Student/Enrollment/SubmitForm', 
+                url: '/Student/Enrollment/SubmitForm',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(formData),
@@ -646,7 +674,6 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
                             title: 'Success!',
                             text: response.message || 'Enrollment submitted successfully.',
                             icon: 'success',
-                            confirmButtonText: 'OK',
                             willClose: () => {
                                 window.location.href = response.redirectUrl || '/Student/Enrollment/Confirmation';
                             }
@@ -659,11 +686,11 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
                         });
                     }
                 },
-                error: function(xhr, status, error) {
-                    let errorMessage = xhr.responseJSON?.error || 'An unexpected error occurred.';
+                error: function(xhr) {
+                    const errorMsg = xhr.responseJSON?.error || 'An unexpected error occurred.';
                     Swal.fire({
                         title: 'Error',
-                        text: errorMessage,
+                        text: errorMsg,
                         icon: 'error'
                     });
                 }
