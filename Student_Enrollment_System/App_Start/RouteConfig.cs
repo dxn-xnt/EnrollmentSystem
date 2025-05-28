@@ -26,6 +26,16 @@ namespace Student_Enrollment_System
                 defaults: new { controller = "ProgramHead", action = "Schedules" }
             );
             routes.MapRoute(
+                name: "ProgramHeadSaveScheduleRoute",
+                url: "Head/Schedules/SaveSchedule",
+                defaults: new { controller = "ProgramHead", action = "SaveSchedule" }
+            );
+            routes.MapRoute(
+                name: "ProgramHeadGetScheduleRoute",
+                url: "Head/Schedules/GetSchedule",
+                defaults: new { controller = "ProgramHead", action = "GetSchedule" }
+            );
+            routes.MapRoute(
                 name: "ProgramHeadEnrollmentApprovalListRoute",
                 url: "Head/EnrollmentApproval",
                 defaults: new { controller = "ProgramHead", action = "Enrollments" }
@@ -94,8 +104,17 @@ namespace Student_Enrollment_System
                 defaults: new { controller = "Curriculum", action = "GetCurriculumCourses" }
             ); 
             
-            
             //Student Routes
+            routes.MapRoute(
+                name: "StudentGetCurriculumRoute",
+                url: "Student/Enrollment/GetCurriculum",
+                defaults: new { controller = "Student", action = "GetCurriculum" }
+            );  
+            routes.MapRoute(
+                name: "StudentAvailableCourseRoute",
+                url: "Student/Enrollment/GetAvailableCourse",
+                defaults: new { controller = "Student", action = "GetAvailableCourse" }
+            ); 
             routes.MapRoute(
                 name: "StudentScheduleRoute",
                 url: "Student/Schedule",
@@ -110,6 +129,11 @@ namespace Student_Enrollment_System
                 name: "StudentEnrollmentRoute",
                 url: "Student/Enrollment",
                 defaults: new { controller = "Student", action = "Enrollment" }
+            );
+            routes.MapRoute(
+                name: "StudentSubmitEnrollmentRoute",
+                url: "Student/Enrollment/SubmitForm",
+                defaults: new { controller = "Student", action = "Enroll" }
             );
             routes.MapRoute(
                 name: "StudentProfileRoute",

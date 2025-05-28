@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        html{
+        html {
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
@@ -52,8 +52,8 @@
         .schedule-table th,
         .schedule-table td {
             border: 1px solid #dee2e6;
-            padding: 8px;
-            text-align: center;
+            padding: 12px;
+            text-align: left;
         }
 
         .schedule-table th {
@@ -63,51 +63,9 @@
             top: 0;
         }
 
-        .time-column {
-            background-color: #f8f9fa;
-            font-weight: bold;
-            position: sticky;
-            left: 0;
-        }
-
-        .schedule-slot {
-            min-height: 80px;
-            position: relative;
-        }
-
-        .schedule-card {
-            background-color: #e7f5ff;
-            border-left: 4px solid #228be6;
-            border-radius: 4px;
-            padding: 5px;
-            margin: 2px;
-            font-size: 0.9em;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .schedule-card:hover {
-            background-color: #d0ebff;
-            transform: scale(1.02);
-        }
-
-        .schedule-card .course-code {
-            font-weight: bold;
-        }
-
-        .schedule-card .instructor {
-            font-size: 0.8em;
-            color: #495057;
-        }
-
-        .empty-slot {
-            color: #adb5bd;
-            font-style: italic;
-        }
-
-        .conflict-highlight {
-            background-color: #fff3bf;
-            border-left: 4px solid #ffd43b;
+        .conflict-row {
+            background-color: #ffeeee;
+            border-left: 4px solid #ff0000;
         }
 
         .toast-container {
@@ -134,6 +92,11 @@
             padding: 10px;
             border-radius: 5px;
             margin-top: 10px;
+        }
+        
+        .action-buttons .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -184,47 +147,21 @@
                     </select>
                 </div>
 
-                <!-- Course Filter -->
-                <div class="col-md-3">
-                    <label for="courseFilter" class="form-label">Course</label>
-                    <select class="form-select" id="courseFilter">
-                        <option value="">All Courses</option>
-                        @{
-                            if (Model?.Any() == true)
-                            {
-                                foreach (var course in Model)
-                                {
-                                    <option value="@course.Code"
-                                            data-lec-hours="@course.LecHours"
-                                            data-lab-hours="@course.LabHours"
-                                            data-course-id="@course.Code">
-                                        @course.Code - @course.Title
-                                    </option>
-                                }
-                            }
-                            else
-                            {
-                                <option disabled>No courses available</option>
-                            }
-                        }
-                    </select>
-                </div>
-
                 <!-- Section Filter -->
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <label for="sectionFilter" class="form-label">Section</label>
                     <select class="form-select" id="sectionFilter">
                         <option value="">All Sections</option>
                         @{
-                            var blockSections = ViewBag.BlockSections as List<Student_Enrollment_System.Models.BlockSection>;
-                            if (blockSections?.Any() == true)
+                            var blksections = ViewBag.BlockSections as List<Student_Enrollment_System.Models.BlockSection>;
+                            if (blksections?.Any() == true)
                             {
-                                foreach (var blockSection in blockSections)
+                                foreach (var blockSection in blksections)
                                 {
                                     <option value="@blockSection.Code" 
                                             data-program="@blockSection.ProgramCode"
                                             data-year="@blockSection.YearLevel">
-                                        @blockSection.Name
+                                        @blockSection.Name (@blockSection.ProgramCode - @blockSection.AcademicYear, Sem @blockSection.Semester)
                                     </option>
                                 }
                             }
@@ -237,7 +174,7 @@
                 </div>
 
                 <!-- Add Button -->
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#assignScheduleModal">
                         <i class="bi bi-plus-circle"></i> Add Schedule
                     </button>
@@ -249,13 +186,14 @@
             <table class="schedule-table">
                 <thead>
                 <tr>
-                    <th>Time</th>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                    <th>Saturday</th>
+                    <th>Schedule ID</th>
+                    <th>Course Code</th>
+                    <th>Course Title</th>
+                    <th>Units</th>
+                    <th>Day & Time</th>
+                    <th>Room</th>
+                    <th>Professor</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody id="scheduleBody">
@@ -289,7 +227,8 @@
                                         {
                                             <option value="@course.Code"
                                                     data-lec-hours="@course.LecHours"
-                                                    data-lab-hours="@course.LabHours">
+                                                    data-lab-hours="@course.LabHours"
+                                                    data-units="@course.Units">
                                                 @course.Code - @course.Title
                                             </option>
                                         }
@@ -313,7 +252,7 @@
                                         foreach (var blockSection in sections)
                                         {
                                             <option value="@blockSection.Code">
-                                                @blockSection.Name (@blockSection.ProgramCode - @blockSection.AcademicYear, Sem @blockSection.Semester)
+                                                @blockSection.Name (@blockSection.ProgramCode - @blockSection.AcademicYear, @blockSection.Semester Sem)
                                             </option>
                                         }
                                     }
@@ -329,7 +268,7 @@
                             <label for="instructorSelect" class="form-label">Instructor</label>
                             <select class="form-select" id="instructorSelect" required>
                                 <option value="" disabled selected>Select Instructor</option>
-                                <option value="TBA">TBA</option>
+                                <option value="1">TBA</option>
                                 <!-- Will be populated dynamically -->
                             </select>
                         </div>
@@ -338,7 +277,7 @@
                             <label for="roomSelect" class="form-label">Room</label>
                             <select class="form-select" id="roomSelect" required>
                                 <option value="" disabled selected>Select Room</option>
-                                <option value="TBA">TBA</option>
+                                <option value="1">TBA</option>
                                 <!-- Will be populated dynamically -->
                             </select>
                         </div>
@@ -392,7 +331,7 @@
                                     </div>
                                     <div class="hours-info" id="hoursInfo" style="display: none;">
                                         <p class="mb-1"><strong>Total Scheduled:</strong> <span id="totalHours">0</span> hours</p>
-                                        <p class="mb-1"><strong>Course Requirement:</strong> <span id="courseHours">0</span> hours</p>
+                                        <p class="mb-1"><strong>Course Requirement:</strong> <span id="courseHours">0</span> hours (<span id="courseUnits">0</span> units)</p>
                                         <p class="mb-0" id="remainingHoursText"></p>
                                     </div>
                                 </div>
@@ -449,8 +388,6 @@
                             <label for="editEndTime" class="form-label">End Time</label>
                             <input type="time" class="form-control" id="editEndTime">
                         </div>
-                        
-                        
                     </div>
                     <div class="mb-3 mt-3">
                         <label for="editInstructor" class="form-label">Instructor</label>
@@ -483,7 +420,6 @@
         let currentFilters = {
             program: '',
             year: '',
-            course: '',
             section: ''
         };
 
@@ -495,7 +431,7 @@
         loadInitialSchedule();
 
         // Filter event listeners
-        $('#programFilter, #yearLevelFilter, #courseFilter, #sectionFilter').change(function() {
+        $('#programFilter, #yearLevelFilter, #sectionFilter').change(function() {
             applyFilters();
         });
 
@@ -507,6 +443,8 @@
 
         $('#modalCourseSelect').change(function() {
             updateCourseHours();
+            $('#hoursInfo').show();
+            updateHoursInfo(); 
         });
 
         $('#addTimeslotBtn').click(addTimeslot);
@@ -536,7 +474,6 @@
             currentFilters = {
                 program: $('#programFilter').val(),
                 year: $('#yearLevelFilter').val(),
-                course: $('#courseFilter').val(),
                 section: $('#sectionFilter').val()
             };
 
@@ -573,8 +510,10 @@
         }
 
         function loadSchedule(sectionId) {
-            $.get(`/Schedule/GetSchedule?sectionId=${sectionId}`, function(data) {
+            console.log(`Loading schedule for section ${sectionId}`);
+            $.get(`/Head/Schedules/GetSchedule?sectionId=${sectionId}`, function(data) {
                 currentSchedule = data;
+                console.log(currentSchedule);
                 renderSchedule();
             }).fail(function() {
                 showError('Failed to load schedule. Please try again.');
@@ -585,71 +524,91 @@
             const $scheduleBody = $('#scheduleBody');
             $scheduleBody.empty();
 
-            // Generate time slots from 7:00 AM to 9:00 PM
-            for (let hour = 7; hour <= 21; hour++) {
-                const timeSlot = `
-                    <tr>
-                        <td class="time-column">${formatHour(hour)}:00 - ${formatHour(hour + 1)}:00</td>
-                        ${generateDayColumns(hour, currentSchedule)}
-                    </tr>`;
-                $scheduleBody.append(timeSlot);
+            if (!currentSchedule || !currentSchedule.data || currentSchedule.data.length === 0) {
+                $scheduleBody.append('<tr><td colspan="7" class="text-center">No schedule data available</td></tr>');
+                return;
             }
 
-            // Add click handlers to schedule cards
-            $('.schedule-card').click(function() {
-                const scheduleId = $(this).data('id');
-                editScheduleModal.show();
+            const table = `
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Schedule Id</th>
+                        <th>Course</th>
+                        <th>Description</th>
+                        <th>Units</th>
+                        <th>Time</th>
+                        <th>Day</th>
+                        <th>Room</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleContent"></tbody>
+            </table>`;
+                    $scheduleBody.append(table);
+        
+                    const $scheduleContent = $('#scheduleContent');
+        
+                    // Process each schedule
+                    currentSchedule.data.forEach(schedule => {
+                        // Group time slots by similar time patterns
+                        const timeGroups = {};
+                        schedule.timeSlots.forEach(slot => {
+                            const timeKey = `${slot.startTime}-${slot.endTime}`;
+                            if (!timeGroups[timeKey]) {
+                                timeGroups[timeKey] = {
+                                    days: [],
+                                    startTime: slot.startTime,
+                                    endTime: slot.endTime
+                                };
+                            }
+                            timeGroups[timeKey].days.push(slot.day);
+                        });
+        
+                        // Create time/day display strings
+                        const timeDisplays = Object.values(timeGroups).map(group => {
+                            const formattedTime = `${formatTimeDisplay(group.startTime)}-${formatTimeDisplay(group.endTime)}`;
+                            return `${formattedTime} ${group.days.join('')}`;
+                        });
+        
+                        // Create row with all schedule information
+                        const row = `
+                <tr class="${schedule.timeSlots.some(slot => slot.hasConflict) ? 'table-warning' : ''}">
+                    <td>${schedule.id}</td>
+                    <td>${schedule.courseCode}</td>
+                    <td>${schedule.courseTitle}</td>
+                    <td>${schedule.units}</td>
+                    <td>${timeDisplays.join('<br>')}</td>
+                    <td>${[...new Set(schedule.timeSlots.map(s => s.day))].sort().join('')}</td>
+                    <td>${schedule.roomNumber}</td>
+                </tr>`;
+
+                $scheduleContent.append(row);
             });
         }
 
-        function formatHour(hour) {
-            return hour > 12 ? hour - 12 : hour;
+        function formatTimeDisplay(time) {
+            const [hourStr, minuteStr] = time.split(':');
+            const hour = parseInt(hourStr);
+            const minutes = parseInt(minuteStr);
+
+            const period = hour >= 12 ? 'pm' : 'am';
+            const displayHour = hour % 12 || 12;
+
+            if (minutes === 0) {
+                return `${displayHour}${period}`;
+            }
+            return `${displayHour}:${minuteStr}${period}`;
         }
 
-        function generateDayColumns(hour, scheduleData) {
-            const days = ['M', 'T', 'W', 'Th', 'F', 'Sat'];
-            const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            let columns = '';
-            
-            days.forEach((day, index) => {
-                const events = scheduleData.filter(e => 
-                    e.day === day && 
-                    isTimeInSlot(hour, e.startTime, e.endTime)
-                );
-                
-                let content = '';
-                events.forEach(event => {
-                    const hasConflict = event.hasConflict;
-                    content += `
-                        <div class="schedule-card ${hasConflict ? 'conflict-highlight' : ''}" 
-                             data-id="${event.id}" 
-                             title="${hasConflict ? 'Schedule conflict detected' : ''}">
-                            <div class="course-code">${event.courseCode}</div>
-                            <div>${event.sectionName}</div>
-                            <div class="instructor">${event.instructorName}</div>
-                            <div>Rm ${event.roomNumber}</div>
-                        </div>`;
-                });
-                
-                columns += `<td class="schedule-slot">${content || '<div class="empty-slot">Available</div>'}</td>`;
-            });
-            
-            return columns;
-        }
-
-        function isTimeInSlot(hour, startTime, endTime) {
-            const startHour = parseInt(startTime.split(':')[0]);
-            const endHour = parseInt(endTime.split(':')[0]);
-            return startHour <= hour && endHour > hour;
-        }
-
+        
         function resetModalForm() {
             $('#assignScheduleForm')[0].reset();
             timeslots = [];
             updateTimeslotDisplay();
             $('#saveScheduleBtn').prop('disabled', true);
         }
-
+    
         function loadDropdownOptions() {
             // Load instructors
             $.get('/Schedule/GetInstructors', function(data) {
@@ -674,9 +633,11 @@
             const selectedOption = $('#modalCourseSelect option:selected');
             const lecHours = parseFloat(selectedOption.data('lec-hours')) || 0;
             const labHours = parseFloat(selectedOption.data('lab-hours')) || 0;
+            const units = parseFloat(selectedOption.data('units')) || 0;
             courseHours = lecHours + labHours;
             
             $('#courseHours').text(courseHours);
+            $('#courseUnits').text(units);
             updateHoursInfo();
         }
 
@@ -782,20 +743,11 @@
             });
         }
 
-        function formatTimeDisplay(time) {
-            const [hours, minutes] = time.split(':');
-            const hourNum = parseInt(hours);
-            const ampm = hourNum >= 12 ? 'PM' : 'AM';
-            const displayHour = hourNum % 12 || 12;
-            return `${displayHour}:${minutes} ${ampm}`;
-        }
-
         function updateHoursInfo() {
             const totalHours = calculateTotalHours();
             const hoursRemaining = courseHours - totalHours;
             
             $('#totalHours').text(totalHours.toFixed(2));
-            $('#courseHours').text(courseHours.toFixed(2));
             $('#remainingHoursText')
                 .toggleClass('text-warning', hoursRemaining > 0)
                 .toggleClass('text-success', hoursRemaining <= 0)
@@ -832,26 +784,32 @@
             }
 
             const scheduleData = {
-                courseId,
-                sectionId,
-                instructorId,
-                roomId,
-                timeslots
+                Schedule: {
+                    CourseCode: courseId,  
+                    BlockSectionCode: sectionId,  
+                    ProfessorId: parseInt(instructorId),  
+                    RoomId: parseInt(roomId)  
+                },
+                TimeSlot: timeslots.map(slot => ({
+                    Day: slot.day,
+                    StartTime: `${slot.startTime}:00`,
+                    EndTime: `${slot.endTime}:00`
+                }))
             };
 
             $.ajax({
-                url: '/Schedule/SaveSchedule',
+                url: '/Head/Schedules/SaveSchedule',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(scheduleData),
                 success: function(response) {
-                    if (response.success) {
+                    if (response.mess) {
                         showSuccess('Schedule saved successfully');
                         assignScheduleModal.hide();
                         loadSchedule(sectionId);
                     } else {
                         showError(response.message || 'Failed to save schedule');
-                        if (response.conflicts) {
+                        if (response.mess) {
                             showError('Conflicts detected: ' + response.conflicts.join(', '));
                         }
                     }

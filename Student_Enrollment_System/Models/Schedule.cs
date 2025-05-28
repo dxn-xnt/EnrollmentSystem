@@ -9,8 +9,8 @@ namespace Student_Enrollment_System.Models
     {
         public int Id { get; set; }
         public string CourseCode { get; set; }
-        public string RoomId { get; set; }
+        public int RoomId { get; set; }
         public string BlockSectionCode { get; set; }
-        public string ProfessorId { get; set; }
+        public int ProfessorId { get; set; }
     }
 }
