@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using Newtonsoft.Json;
@@ -29,7 +30,8 @@ namespace Student_Enrollment_System.Controllers
         }
         public ActionResult Enrollments()
         {
-            return View("~/Views/Program-Head/EnrollmentApproval.cshtml");
+            var enrollments = GetEnrollmentsFromDatabase();
+            return View("~/Views/Program-Head/EnrollmentApproval.cshtml", enrollments);
         }
         public ActionResult Schedules()
         {
@@ -240,7 +242,7 @@ namespace Student_Enrollment_System.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        
         private int SaveScheduleToDatabase(NpgsqlConnection db, NpgsqlTransaction transaction, ScheduleViewModel model)
         {
             // Validate input parameters
@@ -341,6 +343,54 @@ namespace Student_Enrollment_System.Controllers
             }
 
             return blockSections;
+        }
+        
+        private List<Enrollment> GetEnrollmentsFromDatabase()
+        {
+            var enrollments = new List<Enrollment>();
+
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand(@"
+                    SELECT 
+                        e.ENROL_ID,
+                        e.ENROL_STATUS,
+                        e.ENROL_DATE,
+                        e.ENROL_YR_LEVEL,
+                        e.ENROL_SEM,
+                        e.STUD_ID,
+                        e.AY_CODE,
+                        s.STUD_FNAME,
+                        s.STUD_LNAME,
+                        p.PROG_CODE
+                    FROM ENROLLMENT e
+                    JOIN STUDENT s ON e.STUD_ID = s.STUD_ID
+                    JOIN PROGRAM p ON s.PROG_CODE = p.PROG_CODE
+                    WHERE e.ENROL_STATUS = 'Pending'", conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            enrollments.Add(new Enrollment
+                            {
+                                Id = Convert.ToInt32(reader["ENROL_ID"]),
+                                Status = reader["ENROL_STATUS"]?.ToString(),
+                                Date = Convert.ToDateTime(reader["ENROL_DATE"]).ToString("yyyy-MM-dd"),
+                                StudentId = Convert.ToInt32(reader["STUD_ID"]),
+                                AcademicYear = reader["AY_CODE"]?.ToString(),
+                                Semester = reader["ENROL_SEM"] != DBNull.Value ? Convert.ToInt32(reader["ENROL_SEM"]) : 0,
+                                YearLevel = reader["ENROL_YR_LEVEL"] != DBNull.Value ? Convert.ToInt32(reader["ENROL_YR_LEVEL"]) : 0,
+                                StudentName = $"{reader["STUD_FNAME"]} {reader["STUD_LNAME"]}",
+                                Program = reader["PROG_CODE"]?.ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            return enrollments;
         }
         
         private List<YearLevel> GetYearLevelFromDatabase()

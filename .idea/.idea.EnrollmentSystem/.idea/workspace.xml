@@ -9,7 +9,13 @@
   <component name="ChangeListManager">
     <list default="true" id="81c7735a-1533-4594-ab7a-c9f3ef233cf9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.EnrollmentSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.EnrollmentSystem/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/SetSchedules.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/SetSchedules.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/ProgramHeadController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/ProgramHeadController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/StudentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/StudentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/EnrollmentDB_Queries.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/EnrollmentDB_Queries.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Enrollment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Enrollment.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/EnrollmentApproval.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/EnrollmentApproval.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/StudentHeader.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/StudentHeader.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/Dashboard.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/Dashboard.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/StudentEnroll.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/StudentEnroll.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.pdb" afterDir="false" />
@@ -49,12 +55,13 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/Dan/RiderProjects/EnrollmentSystem/Student_Enrollment_System/App_Start/RouteConfig.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/App_Start/RouteConfig.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.css.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/Controllers/CourseController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/Controllers/StudentController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/Models/Prerequisite.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Dan/RiderProjects/EnrollmentSystem/Student_Enrollment_System/Views/Program-Head/SetSchedules.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Dan/RiderProjects/EnrollmentSystem/Student_Enrollment_System/Views/Student/StudentEnroll.cshtml" root0="FORCE_HIGHLIGHTING" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -164,7 +171,7 @@
       <workItem from="1748340254006" duration="33665000" />
       <workItem from="1748386889870" duration="1905000" />
       <workItem from="1748391035063" duration="5152000" />
-      <workItem from="1748413122965" duration="38061000" />
+      <workItem from="1748413122965" duration="44861000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -206,7 +213,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748451340720</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Updated Enrollment Process">
+      <option name="closed" value="true" />
+      <created>1748454059398</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1748454059398</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,7 +235,8 @@
     <MESSAGE value="Update Admin Controls and Dynamic Displays" />
     <MESSAGE value="Updated Admin and Program Head Processes" />
     <MESSAGE value="Initia Student Enrollment Processes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initia Student Enrollment Processes" />
+    <MESSAGE value="Updated Enrollment Process" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Enrollment Process" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

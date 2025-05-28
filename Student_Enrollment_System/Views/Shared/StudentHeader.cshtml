@@ -67,10 +67,6 @@
                        href="@Url.Action("Schedule", "Student")">Class Schedule</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Student_Grade" ? "active" : "")"
-                       href="@Url.Action("Grade", "Student")">View Grades</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="@Url.Action("Index", "Home")">Logout</a>
                 </li>
             </ul>

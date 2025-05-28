@@ -1,3 +1,5 @@
+using System;
+
 namespace Student_Enrollment_System.Models
 {
     public class Enrollment
@@ -9,5 +11,7 @@ namespace Student_Enrollment_System.Models
         public int Semester { get; set; }
         public int StudentId { get; set; }
         public string AcademicYear { get; set; }
+        public string StudentName { get; set; }
+        public string Program { get; set; }
     }
 }

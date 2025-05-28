@@ -1,122 +1,266 @@
+@model IEnumerable<Student_Enrollment_System.Models.Enrollment>
 @{
     ViewBag.Title = "Enrollment Approval";
     Layout = "~/Views/Shared/ProgramHeadHeader.cshtml";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Program Head</title>
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
-    <style>
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+@section Styles {
+<style>
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
 
-        .content-section {
-            padding: 30px;
-            flex-grow: 1;
-        }
+    .content-section {
+        padding: 30px;
+        flex-grow: 1;
+    }
 
-        .card-custom {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
+    .table-responsive {
+        margin-bottom: 30px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.25) !important;
+    }
 
-        .action-buttons button {
-            margin-right: 5px; /* Spacing between buttons */
-        }
-    </style>
-</head>
-<body>
-<!-- Header Placeholder -->
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 5px;
+    }
+
+    th, td {
+        border: 1px solid #000000;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #FE7743;
+        font-weight: 500;
+        color: white;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+    }
+
+    .btn {
+        border-radius: 0 !important;
+        background-color: #273F4F !important;
+        font-weight: 500 !important;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.25) !important;
+        color: white !important;
+        padding: 5px 10px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .btn-info {
+        background-color: #273F4F !important;
+    }
+
+    .btn-success {
+        background-color: #273F4F !important;
+    }
+
+    .btn-danger {
+        background-color: #273F4F !important;
+    }
+
+    .no-enrollments {
+        text-align: center;
+        padding: 20px;
+        color: #6C757D;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+
+    .status-pending {
+        color: #FFC107;
+        font-weight: bold;
+    }
+
+    .status-approved {
+        color: #28A745;
+        font-weight: bold;
+    }
+
+    .status-rejected {
+        color: #DC3545;
+        font-weight: bold;
+    }
+</style>
+}
 
 <div class="container content-section">
-    <h1 class="mb-4">Enrollment Approval</h1>
-    <p class="lead">Review and manage pending student enrollment applications for your program.</p>
+    <div class="enrollment-table">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Enrollment Approval</h2>
+            <button class="btn btn-info" id="refreshBtn">Refresh List</button>
+        </div>
 
-    <div class="card-custom">
-        <h3 class="mb-3">Pending Approvals</h3>
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+            <table>
                 <thead>
-                <tr>
-                    <th>Student ID</th>
-                    <th>Student Name</th>
-                    <th>Course</th>
-                    <th>Year and Semester</th>
-                    <th>Student Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Program</th>
+                        <th>Year & Semester</th>
+                        <th>Academic Year</th>
+                        <th>Status</th>
+                        <th>Date Submitted</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
                 <tbody id="enrollmentApprovalsTableBody">
-                <tr>
-                    <td>6713621</td>
-                    <td>Edmark Talingting</td>
-                    <td>BSIT</td>
-                    <td>3rd Year - 1st Semester</td>
-                    <td>Regular</td>
-                    <td>2025-05-22</td>
-                    <td class="action-buttons">
-                        <button class="btn btn-sm btn-info">View More</button>
-                        <button class="btn btn-sm btn-success">Approve</button>
-                        <button class="btn btn-sm btn-danger">Reject</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2023-002</td>
-                    <td>Maria Clara</td>
-                    <td>BSCS</td>
-                    <td>2nd Year - 2nd Semester</td>
-                    <td>Irregular</td>
-                    <td>2024-05-14</td>
-                    <td class="action-buttons">
-                        <button class="btn btn-sm btn-info">View More</button>
-                        <button class="btn btn-sm btn-success">Approve</button>
-                        <button class="btn btn-sm btn-danger">Reject</button>
-                    </td>
-                </tr>
+                    @if (Model == null || !Model.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="no-enrollments">
+                                <i class="bi bi-exclamation-circle"></i> No pending enrollments found.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var enrollment in Model)
+                        {
+                            <tr data-enrollment-id="@enrollment.Id">
+                                <td>@enrollment.StudentId</td>
+                                <td>@(enrollment.StudentName)</td>
+                                <td>@(enrollment.Program)</td>
+                                <td>@GetYearLevelName(enrollment.YearLevel) - @GetSemesterName(enrollment.Semester)</td>
+                                <td>@enrollment.AcademicYear</td>
+                                <td class="status-@enrollment.Status.ToLower()">@enrollment.Status</td>
+                                <td>@enrollment.Date</td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-info btn-sm view-btn" data-id="@enrollment.Id">View More</button>
+                                    @if (enrollment.Status == "Pending")
+                                    {
+                                        <button class="btn btn-success btn-sm approve-btn" data-id="@enrollment.Id">Approve</button>
+                                        <button class="btn btn-danger btn-sm reject-btn" data-id="@enrollment.Id">Reject</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
                 </tbody>
             </table>
-        </div>
-        <div class="text-end mt-3">
-            <button class="btn btn-info">Refresh List</button>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="~/Content/bootstrap.bundle.min.js"></script>
+@functions {
+    public string GetYearLevelName(int yearLevel)
+    {
+        switch (yearLevel)
+        {
+            case 1:
+                return "1st Year";
+            case 2:
+                return "2nd Year";
+            case 3:
+                return "3rd Year";
+            case 4:
+                return "4th Year";
+            default:
+                return yearLevel + "th Year";
+        }
+    }
 
-<!-- Dynamic Header Load + Table Actions -->
+    public string GetSemesterName(int semester)
+    {
+        switch (semester)
+        {
+            case 1:
+                return "1st Semester";
+            case 2:
+                return "2nd Semester";
+            default:
+                return semester + "th Semester";
+        }
+    }
+}
+
+@section Scripts {
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-
-        // Action handlers for approve/reject/view
-        document.getElementById('enrollmentApprovalsTableBody').addEventListener('click', function (event) {
-            const row = event.target.closest('tr');
-            const studentId = row.querySelector('td').textContent;
-
-            if (event.target.classList.contains('btn-success')) {
-                alert('Approving enrollment for Student ID: ' + studentId);
-                // TODO: Send AJAX request or redirect to controller action
-            } else if (event.target.classList.contains('btn-danger')) {
-                alert('Rejecting enrollment for Student ID: ' + studentId);
-                // TODO: Handle rejection logic
-            } else if (event.target.classList.contains('btn-info')) {
-                alert('View more details for Student ID: ' + studentId);
-                // TODO: Redirect or open modal with student details
-            }
+        // Refresh button handler
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            location.reload();
         });
+
+        // View More button handler
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const enrollmentId = this.getAttribute('data-id');
+                window.location.href = '@Url.Action("Details", "Enrollment")' + '?id=' + enrollmentId;
+            });
+        });
+
+        // Approve button handler
+        document.querySelectorAll('.approve-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const enrollmentId = this.getAttribute('data-id');
+                updateEnrollmentStatus(enrollmentId, 'Approved');
+            });
+        });
+
+        // Reject button handler
+        document.querySelectorAll('.reject-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const enrollmentId = this.getAttribute('data-id');
+                updateEnrollmentStatus(enrollmentId, 'Rejected');
+            });
+        });
+
+        function updateEnrollmentStatus(enrollmentId, status) {
+            if (confirm(`Are you sure you want to ${status.toLowerCase()} this enrollment?`)) {
+                fetch('@Url.Action("UpdateStatus", "Enrollment")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        id: enrollmentId,
+                        status: status
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + (data.message || 'Failed to update status'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while updating the enrollment status.');
+                });
+            }
+        }
     });
 </script>
-</body>
-</html>
+}

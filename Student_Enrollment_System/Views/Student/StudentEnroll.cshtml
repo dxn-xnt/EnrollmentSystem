@@ -631,32 +631,34 @@ Layout = "~/Views/Shared/StudentHeader.cshtml";
                 return;
             }
 
-            // Prepare form data (no parseInt needed since backend expects strings)
+            const studentId = parseInt($('#Id').val());
+            const yearLevel = parseInt($('#yearLevel').val());
+            const semesterId = parseInt($('#enrollmentSemester').val());
             const formData = {
                 Student: {
-                    Id: $('#Id').val(),
+                    Id: studentId,
                     FirstName: $('#FirstName').val().trim(),
                     LastName: $('#LastName').val().trim(),
                     MiddleName: $('#MiddleName').val()?.trim() || null, // Optional field
                     HomeAddress: $('#HomeAddress').val().trim(),
                     Contact: $('#Contact').val().trim(),
                     Email: $('#Email').val().trim(),
-                    YearLevel: $('#yearLevel').val(),
+                    YearLevel: yearLevel,
                     Program: $('#program').val(),
-                    Semester: $('#enrollmentSemester').val(),
+                    Semester: semesterId,
                     Status: $('#studentStatus').val(),
                     BlockSection: $('#blockSection').val(),
                 },
                 Enrollment: {
                     EnrollmentStatus: $('#enrollmentStatus').val(),
                     AcademicYear: academicYear, // Assuming this is defined elsewhere
-                    StudentId: $('#Id').val(),
-                    Semester: $('#enrollmentSemester').val(),
-                    YearLevel: $('#yearLevel').val(),
+                    StudentId: studentId,
+                    Semester: semesterId,
+                    YearLevel: yearLevel,
                 },
                 EnrollingCourses: Array.from(selectedCourses).map(course => ({
                     CourseCode: course.code,
-                    ScheduleId: course.scheduleDetails || null // Handle optional schedule
+                    ScheduleId: parseInt(course.scheduleDetails) 
                 }))
             };
             

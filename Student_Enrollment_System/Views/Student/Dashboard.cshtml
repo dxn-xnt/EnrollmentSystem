@@ -57,7 +57,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Your Profile</h5>
                     <p class="card-text">View and update your personal information and academic records.</p>
-                    <a href="@Url.Action("Student_Profile", "Student")" class="btn btn-primary">Go to Profile</a>
+                    <a href="@Url.Action("ProfileView", "Student")" class="btn btn-primary">Go to Profile</a>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Enrollment</h5>
                     <p class="card-text">Register for new subjects and manage your current course load.</p>
-                    <a href="@Url.Action("Student_Enrollment", "Student")" class="btn btn-primary">Start Enrollment</a>
+                    <a href="@Url.Action("Enrollment", "Student")" class="btn btn-primary">Start Enrollment</a>
                 </div>
                 
             </div>
@@ -76,18 +76,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Class Schedule</h5>
                     <p class="card-text">Check your daily and weekly class timetable.</p>
-                    <a href="@Url.Action("Student_Schedule", "Student")" class="btn btn-primary">View Schedule</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">View Grades</h5>
-                    <p class="card-text">Access your academic performance and grades for all subjects.</p>
-                    <a href="@Url.Action("Student_Grade", "Student")" class="btn btn-primary">Check Grades</a>
+                    <a href="@Url.Action("Schedule", "Student")" class="btn btn-primary">View Schedule</a>
                 </div>
             </div>
         </div>

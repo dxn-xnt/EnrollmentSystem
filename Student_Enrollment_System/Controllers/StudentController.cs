@@ -12,7 +12,7 @@ namespace Student_Enrollment_System.Controllers
     {
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
         
-        
+        public int Id = 0;
         public ActionResult Enrollment()
         {
             var sessionStudentId = Session["StudentId"];
@@ -26,7 +26,8 @@ namespace Student_Enrollment_System.Controllers
             {
                 return RedirectToAction("StudentLogIn", "Account");
             }
-            
+
+            Id = studentId;
             try
             {
                 // Load student data
@@ -67,7 +68,7 @@ namespace Student_Enrollment_System.Controllers
                 }
 
                 // Validate at least one course is selected
-                if (!model.EnrollingCourses.Any())
+                if (model.EnrollingCourses == null || !model.EnrollingCourses.Any())
                 {
                     return Json(new { success = false, error = "Please select at least one course." });
                 }
@@ -86,10 +87,10 @@ namespace Student_Enrollment_System.Controllers
                             // 1. Check for existing pending or active enrollment
                             var enrollmentCheckCmd = new NpgsqlCommand(
                                 @"SELECT COUNT(*) FROM ENROLLMENT 
-                                  WHERE STUD_ID = @StudentId 
-                                  AND AY_CODE = @AcademicYear
-                                  AND ENROL_SEM = @Semester
-                                  AND ENROL_STATUS IN ('Pending', 'Accepted')",
+                                WHERE STUD_ID = @StudentId 
+                                AND AY_CODE = @AcademicYear
+                                AND ENROL_SEM = @Semester
+                                AND ENROL_STATUS IN ('Pending', 'Accepted')",
                                 db, transaction);
                             
                             enrollmentCheckCmd.Parameters.AddWithValue("@StudentId", student.Id);
@@ -116,15 +117,15 @@ namespace Student_Enrollment_System.Controllers
                                 var insertStudentCmd = new NpgsqlCommand(@"
                                     INSERT INTO STUDENT 
                                     (STUD_ID, STUD_FNAME, STUD_LNAME, STUD_MNAME, STUD_HOME_ADDRESS, 
-                                     STUD_CONTACT, STUD_EMAIL, STUD_YR_LEVEL, STUD_SEM, 
-                                     PROG_ID, BSEC_CODE, STUD_STATUS)
+                                    STUD_CONTACT, STUD_EMAIL, STUD_YR_LEVEL, STUD_SEM, 
+                                    PROG_CODE, BSEC_CODE, STUD_STATUS)
                                     VALUES 
                                     (@Id, @FirstName, @LastName, @MiddleName, @HomeAddress, 
-                                     @Contact, @Email, @YearLevel, @Semester, 
-                                     @Program, @BlockSection, @Status)",
+                                    @Contact, @Email, @YearLevel, @Semester, 
+                                    @Program, @BlockSection, @Status)",
                                     db, transaction);
 
-                                AddStudentParameters(insertStudentCmd, student);
+                                AddStudentParameters(insertStudentCmd, student, db, transaction);
                                 insertStudentCmd.ExecuteNonQuery();
                             }
                             else
@@ -139,28 +140,27 @@ namespace Student_Enrollment_System.Controllers
                                         STUD_EMAIL = @Email,
                                         STUD_YR_LEVEL = @YearLevel,
                                         STUD_SEM = @Semester,
-                                        PROG_ID = @Program,
+                                        PROG_CODE = @Program,
                                         BSEC_CODE = @BlockSection,
                                         STUD_STATUS = @Status
                                     WHERE STUD_ID = @Id",
                                     db, transaction);
 
-                                AddStudentParameters(updateStudentCmd, student);
+                                AddStudentParameters(updateStudentCmd, student, db, transaction);
                                 updateStudentCmd.ExecuteNonQuery();
                             }
 
-                            var enrollmentId = Guid.NewGuid().ToString();
+                            
                             var insertEnrollmentCmd = new NpgsqlCommand(@"
                                 INSERT INTO ENROLLMENT 
-                                (ENROL_ID, ENROL_STATUS, ENROL_DATE, ENROL_YR_LEVEL, ENROL_SEM, 
-                                 STUD_ID, AY_CODE)
+                                (ENROL_STATUS, ENROL_DATE, ENROL_YR_LEVEL, ENROL_SEM, 
+                                STUD_ID, AY_CODE)
                                 VALUES 
-                                (@EnrollmentId, @Status, @EnrollmentDate, @YearLevel, @Semester,
-                                 @StudentId, @AcademicYear)
+                                (@Status, @EnrollmentDate, @YearLevel, @Semester,
+                                @StudentId, @AcademicYear)
                                 RETURNING ENROL_ID",
                                 db, transaction);
 
-                            insertEnrollmentCmd.Parameters.AddWithValue("@EnrollmentId", enrollmentId);
                             insertEnrollmentCmd.Parameters.AddWithValue("@Status", "Pending");
                             insertEnrollmentCmd.Parameters.AddWithValue("@EnrollmentDate", DateTime.Now);
                             insertEnrollmentCmd.Parameters.AddWithValue("@YearLevel", model.Enrollment.YearLevel);
@@ -168,7 +168,7 @@ namespace Student_Enrollment_System.Controllers
                             insertEnrollmentCmd.Parameters.AddWithValue("@StudentId", student.Id);
                             insertEnrollmentCmd.Parameters.AddWithValue("@AcademicYear", currentAcademicYear);
 
-                            enrollmentId = (string)insertEnrollmentCmd.ExecuteScalar();
+                            var enrollmentId = Convert.ToInt32(insertEnrollmentCmd.ExecuteScalar());
 
                             // 4. Insert selected courses into ENROLLING_COURSE table
                             foreach (var course in model.EnrollingCourses)
@@ -198,8 +198,7 @@ namespace Student_Enrollment_System.Controllers
 
                                 insertEnrollingCourseCmd.Parameters.AddWithValue("@CourseCode", course.CourseCode);
                                 insertEnrollingCourseCmd.Parameters.AddWithValue("@EnrollmentId", enrollmentId);
-                                insertEnrollingCourseCmd.Parameters.AddWithValue("@ScheduleId", 
-                                    course.ScheduleId > 0 ? (object)course.ScheduleId : DBNull.Value);
+                                insertEnrollingCourseCmd.Parameters.AddWithValue("@ScheduleId", course.ScheduleId);
 
                                 insertEnrollingCourseCmd.ExecuteNonQuery();
                             }
@@ -235,20 +234,38 @@ namespace Student_Enrollment_System.Controllers
             }
         }
 
-        private void AddStudentParameters(NpgsqlCommand cmd, Student student)
+        // First, modify your AddStudentParameters method to accept connection and transaction
+        private void AddStudentParameters(NpgsqlCommand cmd, Student student, NpgsqlConnection db, NpgsqlTransaction transaction)
         {
             cmd.Parameters.AddWithValue("@Id", student.Id);
             cmd.Parameters.AddWithValue("@FirstName", student.FirstName ?? "");
             cmd.Parameters.AddWithValue("@LastName", student.LastName ?? "");
-            cmd.Parameters.AddWithValue("@MiddleName", student.MiddleName ?? "");
+            cmd.Parameters.AddWithValue("@MiddleName", student.MiddleName ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@HomeAddress", student.HomeAddress ?? "");
             cmd.Parameters.AddWithValue("@Contact", student.Contact ?? "");
             cmd.Parameters.AddWithValue("@Email", student.Email ?? "");
             cmd.Parameters.AddWithValue("@YearLevel", student.YearLevel);
             cmd.Parameters.AddWithValue("@Semester", student.Semester);
             cmd.Parameters.AddWithValue("@Program", student.Program ?? "");
-            cmd.Parameters.AddWithValue("@BlockSection", student.BlockSection ?? "");
+    
+            string blockSectionCode = GetBlockSectionCode(student.BlockSection, db, transaction);
+            cmd.Parameters.AddWithValue("@BlockSection", blockSectionCode ?? (object)DBNull.Value);
+    
             cmd.Parameters.AddWithValue("@Status", student.Status ?? "");
+        }
+        
+        private string GetBlockSectionCode(string blockSectionName, NpgsqlConnection db, NpgsqlTransaction transaction)
+        {
+            if (string.IsNullOrEmpty(blockSectionName))
+                return null;
+
+            using (var cmd = new NpgsqlCommand(
+                       "SELECT BSEC_CODE FROM BLOCK_SECTION WHERE BSEC_NAME = @Name", 
+                       db, transaction))
+            {
+                cmd.Parameters.AddWithValue("@Name", blockSectionName);
+                return cmd.ExecuteScalar()?.ToString();
+            }
         }
 
             
@@ -652,8 +669,8 @@ namespace Student_Enrollment_System.Controllers
         [HttpGet]
         public ActionResult ProfileView()
         {
-            // View is located at Views/Account/LogIn.cshtml
-            return View("~/Views/Student/StudentProfile.cshtml");
+            var student = GetStudentFromDatabase(Id);
+            return View("~/Views/Student/StudentProfile.cshtml", student);
         }
         
         [HttpGet]
