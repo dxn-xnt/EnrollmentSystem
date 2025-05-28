@@ -111,42 +111,6 @@
     <div class="schedule-container">
         <div class="filter-section">
             <div class="row g-3 align-items-end">
-                <!-- Program Filter -->
-                <div class="col-md-3">
-                    <label for="programFilter" class="form-label">Program</label>
-                    <select class="form-select" id="programFilter">
-                        <option value="">All Programs</option>
-                        @{
-                            var programs = ViewBag.Programs as List<Student_Enrollment_System.Models.Program>;
-                            if (programs?.Any() == true)
-                            {
-                                foreach (var program in programs)
-                                {
-                                    <option value="@program.Code">@program.Title</option>
-                                }
-                            }
-                        }
-                    </select>
-                </div>
-
-                <!-- Year Level Filter -->
-                <div class="col-md-2">
-                    <label for="yearLevelFilter" class="form-label">Year Level</label>
-                    <select class="form-select" id="yearLevelFilter">
-                        <option value="">All</option>
-                        @{
-                            var yearLevels = ViewBag.YearLevels as List<Student_Enrollment_System.Models.YearLevel>;
-                            if (yearLevels?.Any() == true)
-                            {
-                                foreach (var yearLevel in yearLevels)
-                                {
-                                    <option value="@yearLevel.Id">@yearLevel.Title</option>
-                                }
-                            }
-                        }
-                    </select>
-                </div>
-
                 <!-- Section Filter -->
                 <div class="col-md-4">
                     <label for="sectionFilter" class="form-label">Section</label>
@@ -172,7 +136,8 @@
                         }
                     </select>
                 </div>
-
+                <div class="col-md-3"></div>
+                <div class="col-md-2"></div>
                 <!-- Add Button -->
                 <div class="col-md-3">
                     <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#assignScheduleModal">
@@ -183,23 +148,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="schedule-table">
-                <thead>
-                <tr>
-                    <th>Schedule ID</th>
-                    <th>Course Code</th>
-                    <th>Course Title</th>
-                    <th>Units</th>
-                    <th>Day & Time</th>
-                    <th>Room</th>
-                    <th>Professor</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody id="scheduleBody">
-                <!-- Schedule will be loaded dynamically -->
-                </tbody>
-            </table>
+            <table class="scheduleBody"></table>
         </div>
     </div>
 </div>
