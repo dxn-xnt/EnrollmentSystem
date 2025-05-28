@@ -240,12 +240,14 @@
         <Compile Include="Models\CurriculumCourse.cs" />
         <Compile Include="Models\EnrollingCourse.cs" />
         <Compile Include="Models\Enrollment.cs" />
+        <Compile Include="Models\EnrollmentViewModel.cs" />
         <Compile Include="Models\FacultyAccount.cs" />
         <Compile Include="Models\Prerequisite.cs" />
         <Compile Include="Models\Professor.cs" />
         <Compile Include="Models\Program.cs" />
         <Compile Include="Models\Room.cs" />
         <Compile Include="Models\Schedule.cs" />
+        <Compile Include="Models\ScheduleViewModel.cs" />
         <Compile Include="Models\Semester.cs" />
         <Compile Include="Models\Student.cs" />
         <Compile Include="Models\TimeSlot.cs" />
@@ -320,7 +322,6 @@
         <Content Include="Scripts\JQuery\jquery.js" />
         <Content Include="Scripts\modernizr-2.8.3.js" />
         <Content Include="Scripts\MyScript\AddCourse.js" />
-        <Content Include="Scripts\MyScript\Curriculum.js" />
         <Content Include="Scripts\MyScript\LogIn.js" />
         <Content Include="Scripts\MyScript\FacultyLogIn.js" />
         <Content Include="Scripts\MyScript\SignUp.js" />

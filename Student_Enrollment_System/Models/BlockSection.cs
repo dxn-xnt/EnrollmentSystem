@@ -8,5 +8,6 @@ namespace Student_Enrollment_System.Models
         public string ProgramCode { get; set; }
         public string AcademicYear { get; set; }
         public int Semester { get; set; }
+        public int YearLevel { get; set; }
     }
 }

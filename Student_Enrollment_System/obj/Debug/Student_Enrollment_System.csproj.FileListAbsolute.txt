@@ -87,6 +87,9 @@ C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\System
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\System.Web.WebPages.Deployment.dll
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\System.Web.WebPages.dll
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\System.Web.WebPages.Razor.dll
+C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Abstractions.dll
+C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Container.dll
+C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Mvc5.dll
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\WebGrease.dll
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\BCrypt.Net-Core.pdb
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Microsoft.Bcl.AsyncInterfaces.xml
@@ -123,14 +126,11 @@ C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\System
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\System.Web.WebPages.Razor.xml
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\System.Web.Optimization.xml
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Newtonsoft.Json.xml
+C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Abstractions.pdb
+C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Container.pdb
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Antlr3.Runtime.pdb
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\obj\Debug\Student_Enrollment_System.csproj.AssemblyReference.cache
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\obj\Debug\Student_Enrollment_System.csproj.CoreCompileInputs.cache
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\obj\Debug\Student_.B911E776.Up2Date
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\obj\Debug\Student_Enrollment_System.dll
 C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\obj\Debug\Student_Enrollment_System.pdb
-C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Abstractions.dll
-C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Container.dll
-C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Mvc5.dll
-C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Abstractions.pdb
-C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\bin\Unity.Container.pdb

@@ -8,26 +8,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81c7735a-1533-4594-ab7a-c9f3ef233cf9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/CurriculumController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/CurriculumAssignmentRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Scripts/MyScript/Curriculum.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/EnrollmentViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/ScheduleViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.EnrollmentSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.EnrollmentSystem/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/App_Start/RouteConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/App_Start/RouteConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/AdminController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/AdminController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Global.asax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Global.asax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/CurriculumController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/CurriculumController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/ProgramHeadController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/ProgramHeadController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/StudentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Controllers/StudentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/EnrollmentDB_Queries.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/EnrollmentDB_Queries.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Enrollment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Enrollment.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/Schedule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/Schedule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Models/TimeSlot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Models/TimeSlot.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Student_Enrollment_System.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Student_Enrollment_System.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Courses.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Courses.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Curriculum.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Admin/Curriculum.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/AdminHeader.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Shared/AdminHeader.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Web.config" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Web.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/SetSchedules.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Program-Head/SetSchedules.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/StudentEnroll.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/Views/Student/StudentEnroll.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/bin/Student_Enrollment_System.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.AssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/obj/Debug/Student_Enrollment_System.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_Enrollment_System/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/Student_Enrollment_System/packages.config" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,9 +62,12 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/Users/Dan/RiderProjects/EnrollmentSystem/Student_Enrollment_System/App_Start/RouteConfig.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/App_Start/RouteConfig.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/Content/bootstrap.css.map" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/Controllers/CourseController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/Controllers/StudentController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Student_Enrollment_System/Models/Prerequisite.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -170,7 +173,11 @@
       <workItem from="1748162392984" duration="13442000" />
       <workItem from="1748251151634" duration="21986000" />
       <workItem from="1748286188170" duration="8130000" />
-      <workItem from="1748314804745" duration="19368000" />
+      <workItem from="1748314804745" duration="24494000" />
+      <workItem from="1748340254006" duration="33665000" />
+      <workItem from="1748386889870" duration="1905000" />
+      <workItem from="1748391035063" duration="5152000" />
+      <workItem from="1748413122965" duration="35656000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -188,7 +195,23 @@
       <option name="project" value="LOCAL" />
       <updated>1748287284180</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Update Admin Controls and Dynamic Displays">
+      <option name="closed" value="true" />
+      <created>1748335163434</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1748335163434</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Updated Admin and Program Head Processes">
+      <option name="closed" value="true" />
+      <created>1748360038232</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1748360038232</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,7 +222,9 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Initial Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial Commit" />
+    <MESSAGE value="Update Admin Controls and Dynamic Displays" />
+    <MESSAGE value="Updated Admin and Program Head Processes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Admin and Program Head Processes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -216,19 +241,6 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Student_Enrollment_System/Controllers/ProgramHeadController.cs</url>
-          <line>29</line>
-          <properties documentPath="C:\Users\Dan\RiderProjects\EnrollmentSystem\Student_Enrollment_System\Controllers\ProgramHeadController.cs" containingFunctionPresentation="Method 'ClassManagement'">
-            <startOffsets>
-              <option value="879" />
-            </startOffsets>
-            <endOffsets>
-              <option value="938" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

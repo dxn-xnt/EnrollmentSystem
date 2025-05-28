@@ -1,3 +1,4 @@
+@model IEnumerable<Student_Enrollment_System.Models.Course>
 @{
     ViewBag.Title = "Schedule Management";
     Layout = "~/Views/Shared/ProgramHeadHeader.cshtml";
@@ -10,21 +11,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/Content/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js "></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        html {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-color: #f5f7fa;
         }
-
-        /* Hide scrollbar */
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
         .content-section {
             padding: 30px;
             flex-grow: 1;
@@ -53,50 +52,51 @@
         .schedule-table th,
         .schedule-table td {
             border: 1px solid #dee2e6;
-            padding: 8px;
-            text-align: center;
+            padding: 12px;
+            text-align: left;
         }
 
         .schedule-table th {
             background-color: #007bff;
             color: white;
+            position: sticky;
+            top: 0;
         }
 
-        .time-column {
+        .conflict-row {
+            background-color: #ffeeee;
+            border-left: 4px solid #ff0000;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        .badge-timeslot {
+            cursor: pointer;
+        }
+
+        .badge-timeslot:hover {
+            opacity: 0.9;
+        }
+
+        #timeslotDisplay {
+            min-height: 100px;
+        }
+
+        .hours-info {
             background-color: #f8f9fa;
-            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
         }
-
-        .schedule-slot {
-            min-height: 80px;
-            position: relative;
-        }
-
-        .schedule-card {
-            background-color: #e7f5ff;
-            border-left: 4px solid #228be6;
-            border-radius: 4px;
-            padding: 5px;
-            margin: 2px;
-            font-size: 0.9em;
-        }
-
-        .schedule-card .course-code {
-            font-weight: bold;
-        }
-
-        .schedule-card .instructor {
-            font-size: 0.8em;
-            color: #495057;
-        }
-
-        .add-schedule-btn {
-            margin-top: 20px;
-        }
-
-        .empty-slot {
-            color: #adb5bd;
-            font-style: italic;
+        
+        .action-buttons .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -105,41 +105,79 @@
 <div class="container content-section">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Schedule Management</h1>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignScheduleModal">
-            Assign Subject to Section
-        </button>
+        <div class="toast-container" id="notificationContainer"></div>
     </div>
 
     <div class="schedule-container">
         <div class="filter-section">
-            <div class="row g-3">
-                <div class="col-md-4">
+            <div class="row g-3 align-items-end">
+                <!-- Program Filter -->
+                <div class="col-md-3">
                     <label for="programFilter" class="form-label">Program</label>
                     <select class="form-select" id="programFilter">
                         <option value="">All Programs</option>
-                        <option value="BSIT">BSIT</option>
-                        <option value="BSCS">BSCS</option>
-                        <option value="BSIS">BSIS</option>
+                        @{
+                            var programs = ViewBag.Programs as List<Student_Enrollment_System.Models.Program>;
+                            if (programs?.Any() == true)
+                            {
+                                foreach (var program in programs)
+                                {
+                                    <option value="@program.Code">@program.Title</option>
+                                }
+                            }
+                        }
                     </select>
                 </div>
-                <div class="col-md-4">
+
+                <!-- Year Level Filter -->
+                <div class="col-md-2">
                     <label for="yearLevelFilter" class="form-label">Year Level</label>
                     <select class="form-select" id="yearLevelFilter">
-                        <option value="">All Year Levels</option>
-                        <option value="1">1st Year</option>
-                        <option value="2">2nd Year</option>
-                        <option value="3">3rd Year</option>
-                        <option value="4">4th Year</option>
+                        <option value="">All</option>
+                        @{
+                            var yearLevels = ViewBag.YearLevels as List<Student_Enrollment_System.Models.YearLevel>;
+                            if (yearLevels?.Any() == true)
+                            {
+                                foreach (var yearLevel in yearLevels)
+                                {
+                                    <option value="@yearLevel.Id">@yearLevel.Title</option>
+                                }
+                            }
+                        }
                     </select>
                 </div>
+
+                <!-- Section Filter -->
                 <div class="col-md-4">
                     <label for="sectionFilter" class="form-label">Section</label>
                     <select class="form-select" id="sectionFilter">
                         <option value="">All Sections</option>
-                        <option value="A">Section A</option>
-                        <option value="B">Section B</option>
-                        <option value="C">Section C</option>
+                        @{
+                            var blksections = ViewBag.BlockSections as List<Student_Enrollment_System.Models.BlockSection>;
+                            if (blksections?.Any() == true)
+                            {
+                                foreach (var blockSection in blksections)
+                                {
+                                    <option value="@blockSection.Code" 
+                                            data-program="@blockSection.ProgramCode"
+                                            data-year="@blockSection.YearLevel">
+                                        @blockSection.Name (@blockSection.ProgramCode - @blockSection.AcademicYear, Sem @blockSection.Semester)
+                                    </option>
+                                }
+                            }
+                            else
+                            {
+                                <option disabled>No sections available</option>
+                            }
+                        }
                     </select>
+                </div>
+
+                <!-- Add Button -->
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#assignScheduleModal">
+                        <i class="bi bi-plus-circle"></i> Add Schedule
+                    </button>
                 </div>
             </div>
         </div>
@@ -148,41 +186,18 @@
             <table class="schedule-table">
                 <thead>
                 <tr>
-                    <th>Time</th>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                    <th>Saturday</th>
+                    <th>Schedule ID</th>
+                    <th>Course Code</th>
+                    <th>Course Title</th>
+                    <th>Units</th>
+                    <th>Day & Time</th>
+                    <th>Room</th>
+                    <th>Professor</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody id="scheduleBody">
-                <tr>
-                    <td class="time-column">7:00 - 8:00</td>
-                    <td class="schedule-slot"></td>
-                    <td class="schedule-slot"></td>
-                    <td class="schedule-slot"></td>
-                    <td class="schedule-slot"></td>
-                    <td class="schedule-slot"></td>
-                    <td class="schedule-slot"></td>
-                </tr>
-                <tr>
-                    <td class="time-column">8:00 - 9:00</td>
-                    <td class="schedule-slot">
-                        <div class="schedule-card">
-                            <div class="course-code">IT101</div>
-                            <div>BSIT-1A</div>
-                            <div class="instructor">Prof. Smith</div>
-                            <div>Rm 201</div>
-                        </div>
-                    </td>
-                    <td class="schedule-slot"></td>
-                    <td class="schedule-slot"></td>
-                    <td class="schedule-slot"></td>
-                    <td class="schedule-slot"></td>
-                    <td class="schedule-slot"></td>
-                </tr>
+                <!-- Schedule will be loaded dynamically -->
                 </tbody>
             </table>
         </div>
@@ -194,209 +209,747 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="assignScheduleModalLabel">Assign Subject to Section</h5>
+                <h5 class="modal-title" id="assignScheduleModalLabel">Assign Schedule</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="assignScheduleForm">
                     <div class="row g-3">
+                        <!-- Basic Information -->
                         <div class="col-md-6">
-                            <label for="assignProgram" class="form-label">Program</label>
-                            <select class="form-select" id="assignProgram" required>
-                                <option value="" selected disabled>Select Program</option>
-                                <option value="BSIT">BSIT</option>
-                                <option value="BSCS">BSCS</option>
-                                <option value="BSIS">BSIS</option>
+                            <label for="modalCourseSelect" class="form-label">Course</label>
+                            <select class="form-select" id="modalCourseSelect">
+                                <option value="">All Courses</option>
+                                @{
+                                    if (Model?.Any() == true)
+                                    {
+                                        foreach (var course in Model)
+                                        {
+                                            <option value="@course.Code"
+                                                    data-lec-hours="@course.LecHours"
+                                                    data-lab-hours="@course.LabHours"
+                                                    data-units="@course.Units">
+                                                @course.Code - @course.Title
+                                            </option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option disabled>No courses available</option>
+                                    }
+                                }
                             </select>
                         </div>
+
                         <div class="col-md-6">
-                            <label for="assignYear" class="form-label">Year Level</label>
-                            <select class="form-select" id="assignYear" required>
-                                <option value="" selected disabled>Select Year Level</option>
-                                <option value="1">1st Year</option>
-                                <option value="2">2nd Year</option>
-                                <option value="3">3rd Year</option>
-                                <option value="4">4th Year</option>
+                            <label for="modalSectionSelect" class="form-label">Section</label>
+                            <select class="form-select" id="modalSectionSelect">
+                                <option value="">All Sections</option>
+                                @{
+                                    var sections = ViewBag.BlockSections as List<Student_Enrollment_System.Models.BlockSection>;
+                                    if (sections?.Any() == true)
+                                    {
+                                        foreach (var blockSection in sections)
+                                        {
+                                            <option value="@blockSection.Code">
+                                                @blockSection.Name (@blockSection.ProgramCode - @blockSection.AcademicYear, @blockSection.Semester Sem)
+                                            </option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option disabled>No sections available</option>
+                                    }
+                                }
                             </select>
                         </div>
+
                         <div class="col-md-6">
-                            <label for="assignSection" class="form-label">Section</label>
-                            <select class="form-select" id="assignSection" required>
-                                <option value="" selected disabled>Select Section</option>
-                                <option value="A">Section A</option>
-                                <option value="B">Section B</option>
-                                <option value="C">Section C</option>
+                            <label for="instructorSelect" class="form-label">Instructor</label>
+                            <select class="form-select" id="instructorSelect" required>
+                                <option value="" disabled selected>Select Instructor</option>
+                                <option value="1">TBA</option>
+                                <!-- Will be populated dynamically -->
                             </select>
                         </div>
+
                         <div class="col-md-6">
-                            <label for="assignSubject" class="form-label">Subject</label>
-                            <select class="form-select" id="assignSubject" required>
-                                <option value="" selected disabled>Select Subject</option>
-                                <option value="IT101">IT101 - Introduction to Computing</option>
-                                <option value="CS201">CS201 - Data Structures</option>
-                                <option value="IS301">IS301 - Database Systems</option>
+                            <label for="roomSelect" class="form-label">Room</label>
+                            <select class="form-select" id="roomSelect" required>
+                                <option value="" disabled selected>Select Room</option>
+                                <option value="1">TBA</option>
+                                <!-- Will be populated dynamically -->
                             </select>
                         </div>
-                        <div class="col-md-6">
-                            <label for="assignDay" class="form-label">Day</label>
-                            <select class="form-select" id="assignDay" required>
-                                <option value="" selected disabled>Select Day</option>
-                                <option value="Monday">Monday</option>
-                                <option value="Tuesday">Tuesday</option>
-                                <option value="Wednesday">Wednesday</option>
-                                <option value="Thursday">Thursday</option>
-                                <option value="Friday">Friday</option>
-                                <option value="Saturday">Saturday</option>
-                            </select>
+
+                        <!-- Schedule Times -->
+                        <div class="col-12 mt-3">
+                            <h6>Schedule Times</h6>
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label for="dayFilter" class="form-label">Day</label>
+                                    <select class="form-select" id="dayFilter" required>
+                                        <option value="" selected disabled>Select Day</option>
+                                        <option value="M">Monday</option>
+                                        <option value="T">Tuesday</option>
+                                        <option value="W">Wednesday</option>
+                                        <option value="Th">Thursday</option>
+                                        <option value="F">Friday</option>
+                                        <option value="Sat">Saturday</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="startTimeFilter" class="form-label">Start Time</label>
+                                    <input type="time" class="form-control" id="startTimeFilter" required
+                                           min="07:00" max="22:00">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="endTimeFilter" class="form-label">End Time</label>
+                                    <input type="time" class="form-control" id="endTimeFilter" required
+                                           min="07:00" max="22:00">
+                                </div>
+
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <button type="button" class="btn btn-outline-primary w-100" id="addTimeslotBtn">
+                                        <i class="bi bi-plus"></i> Add Time
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="assignTime" class="form-label">Time Slot</label>
-                            <select class="form-select" id="assignTime" required>
-                                <option value="" selected disabled>Select Time Slot</option>
-                                <option value="7:00-8:00">7:00 AM - 8:00 AM</option>
-                                <option value="8:00-9:00">8:00 AM - 9:00 AM</option>
-                                <option value="9:00-10:00">9:00 AM - 10:00 AM</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="assignInstructor" class="form-label">Instructor</label>
-                            <select class="form-select" id="assignInstructor" required>
-                                <option value="" selected disabled>Select Instructor</option>
-                                <option value="1">Prof. Smith</option>
-                                <option value="2">Prof. Johnson</option>
-                                <option value="3">Prof. Williams</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="assignRoom" class="form-label">Room</label>
-                            <input type="text" class="form-control" id="assignRoom" required>
+                        
+                        <!-- Timeslot display section -->
+                        <div class="col-12 mt-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Current Schedule Timeslots</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="timeslotDisplay" class="timeslot-container">
+                                        <p class="text-muted mb-0">No timeslots added yet.</p>
+                                    </div>
+                                    <div class="hours-info" id="hoursInfo" style="display: none;">
+                                        <p class="mb-1"><strong>Total Scheduled:</strong> <span id="totalHours">0</span> hours</p>
+                                        <p class="mb-1"><strong>Course Requirement:</strong> <span id="courseHours">0</span> hours (<span id="courseUnits">0</span> units)</p>
+                                        <p class="mb-0" id="remainingHoursText"></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveScheduleBtn">Assign Schedule</button>
+                <button type="button" class="btn btn-primary" id="saveScheduleBtn">Save Schedule</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Schedule Modal -->
+<div class="modal fade" id="editScheduleModal" tabindex="-1" aria-labelledby="editScheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editScheduleModalLabel">Edit Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editScheduleForm">
+                    <input type="hidden" id="editScheduleId">
+                    <div class="mb-3">
+                        <label for="editCourse" class="form-label">Course</label>
+                        <input type="text" class="form-control" id="editCourse" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSection" class="form-label">Section</label>
+                        <input type="text" class="form-control" id="editSection" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDay" class="form-label">Day</label>
+                        <select class="form-select" id="editDay">
+                            <option value="M">Monday</option>
+                            <option value="T">Tuesday</option>
+                            <option value="W">Wednesday</option>
+                            <option value="Th">Thursday</option>
+                            <option value="F">Friday</option>
+                            <option value="Sat">Saturday</option>
+                        </select>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="editStartTime" class="form-label">Start Time</label>
+                            <input type="time" class="form-control" id="editStartTime">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="editEndTime" class="form-label">End Time</label>
+                            <input type="time" class="form-control" id="editEndTime">
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label for="editInstructor" class="form-label">Instructor</label>
+                        <select class="form-select" id="editInstructor"></select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editRoom" class="form-label">Room</label>
+                        <select class="form-select" id="editRoom"></select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger me-auto" id="deleteScheduleBtn">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="updateScheduleBtn">Save Changes</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Scripts -->
-<script src="~/Content/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    $(document).ready(function() {
+        // Global variables
+        let currentSchedule = [];
+        let timeslots = [];
+        let courseHours = 0;
+        let currentSectionId = '';
+        let currentFilters = {
+            program: '',
+            year: '',
+            section: ''
+        };
 
-        
-                const currentPath = window.location.pathname;
-                const currentPage = currentPath.substring(currentPath.lastIndexOf('/') + 1);
-                const navLinks = document.querySelectorAll('#navbarNavProgramHead .nav-link');
-                navLinks.forEach(link => {
-                    const linkHref = link.getAttribute('href');
-                    const linkPage = linkHref.substring(linkHref.lastIndexOf('/') + 1);
-
-                    if (linkPage.toLowerCase() === currentPage.toLowerCase()) {
-                        link.classList.add('active');
-                        link.setAttribute('aria-current', 'page');
-                    } else {
-                        link.classList.remove('active');
-                        link.removeAttribute('aria-current');
-                    }
-                });
-            })
+        // Initialize modals
         const assignScheduleModal = new bootstrap.Modal(document.getElementById('assignScheduleModal'));
+        const editScheduleModal = new bootstrap.Modal(document.getElementById('editScheduleModal'));
 
-        document.getElementById('saveScheduleBtn').addEventListener('click', function () {
-            const program = document.getElementById('assignProgram').value;
-            const year = document.getElementById('assignYear').value;
-            const section = document.getElementById('assignSection').value;
-            const subject = document.getElementById('assignSubject').value;
-            const day = document.getElementById('assignDay').value;
-            const time = document.getElementById('assignTime').value;
-            const instructor = document.getElementById('assignInstructor').value;
-            const room = document.getElementById('assignRoom').value;
+        // Load initial schedule
+        loadInitialSchedule();
 
-            if (!program || !year || !section || !subject || !day || !time || !instructor || !room) {
-                alert('Please fill in all fields');
-                return;
-            }
-
-            addScheduleToTable(program, year, section, subject, day, time, instructor, room);
-            assignScheduleModal.hide();
-            document.getElementById('assignScheduleForm').reset();
+        // Filter event listeners
+        $('#programFilter, #yearLevelFilter, #sectionFilter').change(function() {
+            applyFilters();
         });
 
-        function addScheduleToTable(program, year, section, subject, day, time, instructor, room) {
-            const [startTime] = time.split('-');
-            const timeRow = findTimeRow(startTime.trim());
-            if (!timeRow) {
-                alert('Could not find the specified time slot in the schedule');
+        // Modal events
+        $('#assignScheduleModal').on('show.bs.modal', function() {
+            resetModalForm();
+            loadDropdownOptions();
+        });
+
+        $('#modalCourseSelect').change(function() {
+            updateCourseHours();
+            $('#hoursInfo').show();
+            updateHoursInfo(); 
+        });
+
+        $('#addTimeslotBtn').click(addTimeslot);
+        $('#saveScheduleBtn').click(saveSchedule);
+
+        // Edit modal events
+        $('#editScheduleModal').on('show.bs.modal', function(event) {
+            const button = $(event.relatedTarget);
+            const scheduleId = button.data('id');
+            loadScheduleForEdit(scheduleId);
+        });
+
+        $('#updateScheduleBtn').click(updateSchedule);
+        $('#deleteScheduleBtn').click(deleteSchedule);
+
+        // Functions
+        function loadInitialSchedule() {
+            // Load schedule for the first section by default
+            const firstSection = $('#sectionFilter option:not(:disabled)').first();
+            if (firstSection.length) {
+                currentSectionId = firstSection.val();
+                loadSchedule(currentSectionId);
+            }
+        }
+
+        function applyFilters() {
+            currentFilters = {
+                program: $('#programFilter').val(),
+                year: $('#yearLevelFilter').val(),
+                section: $('#sectionFilter').val()
+            };
+
+            // Filter sections based on program and year
+            filterSections();
+
+            // Load schedule for selected section
+            if (currentFilters.section) {
+                currentSectionId = currentFilters.section;
+                loadSchedule(currentSectionId);
+            }
+        }
+
+        function filterSections() {
+            const programFilter = currentFilters.program;
+            const yearFilter = currentFilters.year;
+
+            $('#sectionFilter option').each(function() {
+                const sectionProgram = $(this).data('program');
+                const sectionYear = $(this).data('year');
+                const matchesProgram = !programFilter || sectionProgram === programFilter;
+                const matchesYear = !yearFilter || sectionYear == yearFilter;
+                
+                $(this).toggle(matchesProgram && matchesYear);
+                if (!matchesProgram || !matchesYear) {
+                    $(this).prop('selected', false);
+                }
+            });
+
+            // Select first available section if none selected
+            if (!currentFilters.section) {
+                $('#sectionFilter option:visible:not(:disabled)').first().prop('selected', true);
+            }
+        }
+
+        function loadSchedule(sectionId) {
+            console.log(`Loading schedule for section ${sectionId}`);
+            $.get(`/Head/Schedules/GetSchedule?sectionId=${sectionId}`, function(data) {
+                currentSchedule = data;
+                console.log(currentSchedule);
+                renderSchedule();
+            }).fail(function() {
+                showError('Failed to load schedule. Please try again.');
+            });
+        }
+
+        function renderSchedule() {
+            const $scheduleBody = $('#scheduleBody');
+            $scheduleBody.empty();
+
+            if (!currentSchedule || !currentSchedule.data || currentSchedule.data.length === 0) {
+                $scheduleBody.append('<tr><td colspan="7" class="text-center">No schedule data available</td></tr>');
                 return;
             }
 
-            const dayIndex = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(day) + 1;
-            const dayCell = timeRow.cells[dayIndex];
-            dayCell.innerHTML = '';
+            const table = `
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Schedule Id</th>
+                        <th>Course</th>
+                        <th>Description</th>
+                        <th>Units</th>
+                        <th>Time</th>
+                        <th>Day</th>
+                        <th>Room</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleContent"></tbody>
+            </table>`;
+                    $scheduleBody.append(table);
+        
+                    const $scheduleContent = $('#scheduleContent');
+        
+                    // Process each schedule
+                    currentSchedule.data.forEach(schedule => {
+                        // Group time slots by similar time patterns
+                        const timeGroups = {};
+                        schedule.timeSlots.forEach(slot => {
+                            const timeKey = `${slot.startTime}-${slot.endTime}`;
+                            if (!timeGroups[timeKey]) {
+                                timeGroups[timeKey] = {
+                                    days: [],
+                                    startTime: slot.startTime,
+                                    endTime: slot.endTime
+                                };
+                            }
+                            timeGroups[timeKey].days.push(slot.day);
+                        });
+        
+                        // Create time/day display strings
+                        const timeDisplays = Object.values(timeGroups).map(group => {
+                            const formattedTime = `${formatTimeDisplay(group.startTime)}-${formatTimeDisplay(group.endTime)}`;
+                            return `${formattedTime} ${group.days.join('')}`;
+                        });
+        
+                        // Create row with all schedule information
+                        const row = `
+                <tr class="${schedule.timeSlots.some(slot => slot.hasConflict) ? 'table-warning' : ''}">
+                    <td>${schedule.id}</td>
+                    <td>${schedule.courseCode}</td>
+                    <td>${schedule.courseTitle}</td>
+                    <td>${schedule.units}</td>
+                    <td>${timeDisplays.join('<br>')}</td>
+                    <td>${[...new Set(schedule.timeSlots.map(s => s.day))].sort().join('')}</td>
+                    <td>${schedule.roomNumber}</td>
+                </tr>`;
 
-            const card = document.createElement('div');
-            card.className = 'schedule-card';
-            card.innerHTML = `
-                    <div class="course-code">${subject.split(' - ')[0]}</div>
-                    <div>${program}-${year}${section}</div>
-                    <div class="instructor">${instructor}</div>
-                    <div>Rm ${room}</div>
-                `;
+                $scheduleContent.append(row);
+            });
+        }
 
-            const actions = document.createElement('div');
-            actions.className = 'schedule-actions mt-2';
-            actions.innerHTML = `
-                    <button class="btn btn-sm btn-outline-primary me-1 edit-btn">Edit</button>
-                    <button class="btn btn-sm btn-outline-danger delete-btn">Delete</button>
-                `;
+        function formatTimeDisplay(time) {
+            const [hourStr, minuteStr] = time.split(':');
+            const hour = parseInt(hourStr);
+            const minutes = parseInt(minuteStr);
 
-            card.appendChild(actions);
-            dayCell.appendChild(card);
+            const period = hour >= 12 ? 'pm' : 'am';
+            const displayHour = hour % 12 || 12;
 
-            card.querySelector('.edit-btn').addEventListener('click', function () {
-                alert('Edit functionality would go here');
+            if (minutes === 0) {
+                return `${displayHour}${period}`;
+            }
+            return `${displayHour}:${minuteStr}${period}`;
+        }
+
+        
+        function resetModalForm() {
+            $('#assignScheduleForm')[0].reset();
+            timeslots = [];
+            updateTimeslotDisplay();
+            $('#saveScheduleBtn').prop('disabled', true);
+        }
+    
+        function loadDropdownOptions() {
+            // Load instructors
+            $.get('/Schedule/GetInstructors', function(data) {
+                const $select = $('#instructorSelect');
+                $select.empty().append('<option value="" disabled selected>Select Instructor</option>');
+                data.forEach(instructor => {
+                    $select.append(`<option value="${instructor.id}">${instructor.name}</option>`);
+                });
             });
 
-            card.querySelector('.delete-btn').addEventListener('click', function () {
-                if (confirm('Are you sure you want to delete this schedule?')) {
-                    dayCell.innerHTML = '';
+            // Load rooms
+            $.get('/Schedule/GetRooms', function(data) {
+                const $select = $('#roomSelect');
+                $select.empty().append('<option value="" disabled selected>Select Room</option>');
+                data.forEach(room => {
+                    $select.append(`<option value="${room.id}">${room.number} (${room.type})</option>`);
+                });
+            });
+        }
+
+        function updateCourseHours() {
+            const selectedOption = $('#modalCourseSelect option:selected');
+            const lecHours = parseFloat(selectedOption.data('lec-hours')) || 0;
+            const labHours = parseFloat(selectedOption.data('lab-hours')) || 0;
+            const units = parseFloat(selectedOption.data('units')) || 0;
+            courseHours = lecHours + labHours;
+            
+            $('#courseHours').text(courseHours);
+            $('#courseUnits').text(units);
+            updateHoursInfo();
+        }
+
+        function addTimeslot() {
+            const day = $('#dayFilter').val();
+            const dayName = $('#dayFilter option:selected').text();
+            const startTime = $('#startTimeFilter').val();
+            const endTime = $('#endTimeFilter').val();
+
+            if (!day || !startTime || !endTime) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            if (startTime >= endTime) {
+                showError('End time must be after start time');
+                return;
+            }
+
+            const newSlot = {
+                day,
+                dayName,
+                startTime,
+                endTime,
+                key: `${day}-${startTime}-${endTime}`
+            };
+
+            // Check for duplicates
+            if (timeslots.some(slot => slot.key === newSlot.key)) {
+                showError('This timeslot already exists');
+                return;
+            }
+
+            // Check for conflicts with existing timeslots
+            const conflicts = checkForTimeslotConflicts(newSlot);
+            if (conflicts.length > 0) {
+                showError('This timeslot conflicts with existing slots');
+                return;
+            }
+
+            // Calculate the duration of the new timeslot in hours
+            const newSlotDuration = calculateTimeslotDuration(newSlot);
+            
+            // Calculate total scheduled hours including the new slot
+            const totalHoursWithNewSlot = calculateTotalHours() + newSlotDuration;
+            
+            // Check if adding this timeslot would exceed course hours
+            if (totalHoursWithNewSlot > courseHours) {
+                const remainingHours = courseHours - calculateTotalHours();
+                showError(`Adding this timeslot would exceed the course requirement. Maximum remaining hours: ${remainingHours.toFixed(2)}`);
+                return;
+            }
+
+            timeslots.push(newSlot);
+            updateTimeslotDisplay();
+            
+            // Clear time inputs
+            $('#startTimeFilter, #endTimeFilter').val('');
+        }
+
+        function calculateTimeslotDuration(timeslot) {
+            const start = new Date(`2000-01-01T${timeslot.startTime}`);
+            const end = new Date(`2000-01-01T${timeslot.endTime}`);
+            return (end - start) / (1000 * 60 * 60); // Convert milliseconds to hours
+        }
+
+        function checkForTimeslotConflicts(newSlot) {
+            return timeslots.filter(slot => {
+                return slot.day === newSlot.day && 
+                       ((newSlot.startTime >= slot.startTime && newSlot.startTime < slot.endTime) ||
+                        (newSlot.endTime > slot.startTime && newSlot.endTime <= slot.endTime) ||
+                        (newSlot.startTime <= slot.startTime && newSlot.endTime >= slot.endTime));
+            });
+        }
+
+        function updateTimeslotDisplay() {
+            const $display = $('#timeslotDisplay');
+            
+            if (timeslots.length === 0) {
+                $display.html('<p class="text-muted mb-0">No timeslots added yet.</p>');
+                $('#hoursInfo').hide();
+                return;
+            }
+
+            let html = '<div class="d-flex flex-wrap gap-2 mb-2">';
+            timeslots.forEach((slot, index) => {
+                html += `
+                    <span class="badge bg-primary badge-timeslot" data-index="${index}">
+                        ${slot.dayName}: ${formatTimeDisplay(slot.startTime)} - ${formatTimeDisplay(slot.endTime)}
+                        <i class="bi bi-x ms-2 remove-timeslot"></i>
+                    </span>`;
+            });
+            html += '</div>';
+            $display.html(html);
+            $('#hoursInfo').show();
+            updateHoursInfo();
+
+            // Add remove handlers
+            $('.remove-timeslot').click(function() {
+                const index = $(this).parent().data('index');
+                timeslots.splice(index, 1);
+                updateTimeslotDisplay();
+            });
+        }
+
+        function updateHoursInfo() {
+            const totalHours = calculateTotalHours();
+            const hoursRemaining = courseHours - totalHours;
+            
+            $('#totalHours').text(totalHours.toFixed(2));
+            $('#remainingHoursText')
+                .toggleClass('text-warning', hoursRemaining > 0)
+                .toggleClass('text-success', hoursRemaining <= 0)
+                .html(`<strong>${hoursRemaining > 0 ? 'Remaining:' : 'Completed:'}</strong> 
+                      ${Math.abs(hoursRemaining).toFixed(2)} hours ${hoursRemaining > 0 ? 'needed' : ''}`);
+            
+            $('#saveScheduleBtn').prop('disabled', hoursRemaining > 0);
+        }
+
+        function calculateTotalHours() {
+            let totalHours = 0;
+            timeslots.forEach(slot => {
+                totalHours += calculateTimeslotDuration(slot);
+            });
+            return totalHours;
+        }
+
+        function saveSchedule() {
+            const courseId = $('#modalCourseSelect').val();
+            const sectionId = $('#modalSectionSelect').val();
+            const instructorId = $('#instructorSelect').val();
+            const roomId = $('#roomSelect').val();
+
+            if (!courseId || !sectionId || !instructorId || !roomId || timeslots.length === 0) {
+                showError('Please fill in all required fields');
+                return;
+            }
+
+            // Final validation to ensure total hours match course requirements
+            const totalHours = calculateTotalHours();
+            if (Math.abs(totalHours - courseHours) > 0.1) { // Allow small floating point differences
+                showError(`Total scheduled hours (${totalHours.toFixed(2)}) do not match course requirements (${courseHours.toFixed(2)})`);
+                return;
+            }
+
+            const scheduleData = {
+                Schedule: {
+                    CourseCode: courseId,  
+                    BlockSectionCode: sectionId,  
+                    ProfessorId: parseInt(instructorId),  
+                    RoomId: parseInt(roomId)  
+                },
+                TimeSlot: timeslots.map(slot => ({
+                    Day: slot.day,
+                    StartTime: `${slot.startTime}:00`,
+                    EndTime: `${slot.endTime}:00`
+                }))
+            };
+
+            $.ajax({
+                url: '/Head/Schedules/SaveSchedule',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(scheduleData),
+                success: function(response) {
+                    if (response.mess) {
+                        showSuccess('Schedule saved successfully');
+                        assignScheduleModal.hide();
+                        loadSchedule(sectionId);
+                    } else {
+                        showError(response.message || 'Failed to save schedule');
+                        if (response.mess) {
+                            showError('Conflicts detected: ' + response.conflicts.join(', '));
+                        }
+                    }
+                },
+                error: function() {
+                    showError('An error occurred while saving the schedule');
                 }
             });
         }
 
-        function findTimeRow(time) {
-            const rows = document.querySelectorAll('#scheduleBody tr');
-            for (let row of rows) {
-                if (row.cells[0].textContent.includes(time)) {
-                    return row;
+        function loadScheduleForEdit(scheduleId) {
+            $.get(`/Schedule/GetScheduleEntry?id=${scheduleId}`, function(data) {
+                $('#editScheduleId').val(data.id);
+                $('#editCourse').val(data.courseCode + ' - ' + data.courseTitle);
+                $('#editSection').val(data.sectionName);
+                $('#editDay').val(data.day);
+                $('#editStartTime').val(data.startTime);
+                $('#editEndTime').val(data.endTime);
+
+                // Load instructors and set current
+                $.get('/Schedule/GetInstructors', function(instructors) {
+                    const $select = $('#editInstructor');
+                    $select.empty();
+                    instructors.forEach(instructor => {
+                        $select.append(`<option value="${instructor.id}" ${instructor.id == data.instructorId ? 'selected' : ''}>
+                                        ${instructor.name}
+                                      </option>`);
+                    });
+                });
+
+                // Load rooms and set current
+                $.get('/Schedule/GetRooms', function(rooms) {
+                    const $select = $('#editRoom');
+                    $select.empty();
+                    rooms.forEach(room => {
+                        $select.append(`<option value="${room.id}" ${room.id == data.roomId ? 'selected' : ''}>
+                                        ${room.number} (${room.type})
+                                      </option>`);
+                    });
+                });
+            }).fail(function() {
+                showError('Failed to load schedule data');
+                editScheduleModal.hide();
+            });
+        }
+
+        function updateSchedule() {
+            const scheduleId = $('#editScheduleId').val();
+            const day = $('#editDay').val();
+            const startTime = $('#editStartTime').val();
+            const endTime = $('#editEndTime').val();
+            const instructorId = $('#editInstructor').val();
+            const roomId = $('#editRoom').val();
+
+            if (!scheduleId || !day || !startTime || !endTime || !instructorId || !roomId) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            const updateData = {
+                id: scheduleId,
+                day,
+                startTime,
+                endTime,
+                instructorId,
+                roomId
+            };
+
+            $.ajax({
+                url: '/Schedule/UpdateSchedule',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updateData),
+                success: function(response) {
+                    if (response.success) {
+                        showSuccess('Schedule updated successfully');
+                        editScheduleModal.hide();
+                        loadSchedule(currentSectionId);
+                    } else {
+                        showError(response.message || 'Failed to update schedule');
+                    }
+                },
+                error: function() {
+                    showError('An error occurred while updating the schedule');
                 }
-            }
-            return null;
+            });
         }
 
-        document.getElementById('programFilter').addEventListener('change', filterSchedule);
-        document.getElementById('yearLevelFilter').addEventListener('change', filterSchedule);
-        document.getElementById('sectionFilter').addEventListener('change', filterSchedule);
-
-        function filterSchedule() {
-            const programFilter = document.getElementById('programFilter').value;
-            const yearFilter = document.getElementById('yearLevelFilter').value;
-            const sectionFilter = document.getElementById('sectionFilter').value;
-
-            let filterText = '';
-            if (programFilter) filterText += `Program: ${programFilter} `;
-            if (yearFilter) filterText += `Year: ${yearFilter} `;
-            if (sectionFilter) filterText += `Section: ${sectionFilter}`;
-
-            if (filterText) {
-                alert(`Filtering by ${filterText}. In a real app, this would filter the schedule.`);
+        function deleteSchedule() {
+            if (!confirm('Are you sure you want to delete this schedule entry?')) {
+                return;
             }
+
+            const scheduleId = $('#editScheduleId').val();
+
+            $.ajax({
+                url: '/Schedule/DeleteSchedule',
+                type: 'POST',
+                data: { id: scheduleId },
+                success: function(response) {
+                    if (response.success) {
+                        showSuccess('Schedule deleted successfully');
+                        editScheduleModal.hide();
+                        loadSchedule(currentSectionId);
+                    } else {
+                        showError(response.message || 'Failed to delete schedule');
+                    }
+                },
+                error: function() {
+                    showError('An error occurred while deleting the schedule');
+                }
+            });
         }
+
+        function showSuccess(message) {
+            showToast(message, 'success');
+        }
+
+        function showError(message) {
+            showToast(message, 'danger');
+        }
+
+        function showToast(message, type) {
+            const toast = $(`
+                <div class="toast align-items-center text-white bg-${type}" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `);
+            
+            $('#notificationContainer').append(toast);
+            toast.toast({ autohide: true, delay: 5000 }).toast('show');
+            
+            toast.on('hidden.bs.toast', function() {
+                toast.remove();
+            });
+        }
+    });
 </script>
 </body>
 </html>

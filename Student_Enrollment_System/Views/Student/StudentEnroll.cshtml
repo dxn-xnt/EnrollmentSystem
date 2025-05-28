@@ -1,21 +1,19 @@
+@model Student_Enrollment_System.Models.Student
 @{
-    ViewBag.Title = "Enrollment";
-    Layout = "~/Views/Shared/StudentHeader.cshtml";
+ViewBag.Title = "Enrollment";
+Layout = "~/Views/Shared/StudentHeader.cshtml";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enrollment - Enrollment System</title>
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -24,22 +22,29 @@
             padding: 30px;
             flex-grow: 1;
         }
-        /* Styles for the dynamically displayed subject table */
         #subjectSelectionArea {
-            display: none; /* Hidden by default */
+            display: none;
         }
         .info-display-box {
-            background-color: #e9ecef; /* Light grey background */
+            background-color: #e9ecef;
             padding: 15px;
             border-radius: .3rem;
             margin-bottom: 20px;
             font-size: 1.1rem;
             font-weight: 500;
-            color: #343a40; /* Darker text */
+            color: #343a40;
+        }
+        .schedule-info {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        .table th, .table td {
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
+
 <div class="container content-section">
     <h1 class="mb-4">Student Enrollment</h1>
     <p class="lead">Begin your enrollment process, select subjects, and confirm your course load for the upcoming academic term.</p>
@@ -47,278 +52,627 @@
     <div class="card mt-4">
         <div class="card-body">
             <h5 class="card-title mb-4">Student Information</h5>
-            <form id="enrollmentForm">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="studentId" class="form-label">Student ID</label>
-                        <input type="text" class="form-control" id="studentId" placeholder="Enter Student ID">
-                    </div>
+            @using (Html.BeginForm("Enrollment", "Student", FormMethod.Post, new { id = "enrollmentForm" }))
+            {
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="studentId" class="form-label">Student ID</label>
+                    @Html.TextBoxFor(model => model.Id, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="schoolYear" class="form-label">School Year</label>
+                    <select class="form-select" id="schoolYear" name="enrollmentSemester">
+                        <option value="" selected disabled>Choose Academic Year...</option>
+                        @{
+                        var academicYears = ViewBag.AcademicYears as List<Student_Enrollment_System.Models.AcademicYear>;
+                        if (academicYears?.Any() == true)
+                        {
+                        foreach (var year in academicYears)
+                        {
+                        <option value="@year.Code">@year.StartYear - @year.EndYear</option>
+                        }
+                        }
+                        else
+                        {
+                        <option disabled>No academic years available</option>
+                        }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="enrollmentSemester" class="form-label">Semester</label>
+                    <select class="form-select" id="enrollmentSemester" name="enrollmentSemester">
+                        @{
+                        var semesters = ViewBag.Semesters as List<Student_Enrollment_System.Models.Semester>;
+                        if (semesters?.Any() == true)
+                        {
+                        foreach (var sem in semesters)
+                        {
+                        <option value="@sem.Id">@sem.Name</option>
+                        }
+                        }
+                        else
+                        {
+                        <option disabled>No semesters available</option>
+                        }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="studentStatus" class="form-label">Student Status</label>
+                    <select class="form-select" id="studentStatus" name="studentStatus">
+                        <option selected disabled>Choose...</option>
+                        <option value="Regular">Regular</option>
+                        <option value="Irregular">Irregular</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="enrollmentStatus" class="form-label">Enrollment Status</label>
+                    <select class="form-select" id="enrollmentStatus" name="enrollmentStatus">
+                        <option selected disabled>Choose...</option>
+                        <option value="New">New</option>
+                        <option value="Old">Old</option>
+                        <option value="Transferee">Transferee</option>
+                        <option value="Cross-Enrollee">Cross-Enrollee</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @readonly = "readonly" })                    </div>
+                <div class="col-md-4">
+                    <label for="firstName" class="form-label">First Name</label>
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @readonly = "readonly" })                    </div>
+                <div class="col-md-4">
+                    <label for="middleName" class="form-label">Middle Name</label>
+                    @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control", @readonly = "readonly" })                    </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="homeAddress" class="form-label">Home Address</label>
+                @Html.TextBoxFor(model => model.HomeAddress, new { @class = "form-control", @readonly = "readonly" })                </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="contactNumber" class="form-label">Contact Number</label>
+                    @Html.TextBoxFor(model => model.Contact, new { @class = "form-control", @readonly = "readonly" })                    </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @readonly = "readonly" })                    </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <label for="yearLevel" class="form-label">Year Level</label>
+                    <select class="form-select" id="yearLevel" name="yearLevel">
+                        @{
+                        var yearLevels = ViewBag.YearLevels as List<Student_Enrollment_System.Models.YearLevel>;
+                        if (yearLevels?.Any() == true)
+                        {
+                        foreach (var yearLevel in yearLevels)
+                        {
+                        <option value="@yearLevel.Id">@yearLevel.Title</option>
+                        }
+                        }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="program" class="form-label">Program</label>
+                    <select class="form-select" id="program" name="program">
+                        <option value="" selected disabled>Choose Program...</option>
+                        @{
+                            var programs = ViewBag.Programs as List<Student_Enrollment_System.Models.Program>;
+                            }
+                            @if (programs != null && programs.Any())
+                            {
+                                foreach (var program in programs)
+                                {
+                                <option value="@program.Code">@program.Title</option>
+                                }
+                            }
+                            else
+                            {
+                            <option disabled>No programs found</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="blockSection" class="form-label">Block Section</label>
+                    <input type="text" class="form-control" id="blockSection" name="blockSection" placeholder="e.g., IT-A">
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h5 class="card-title">Subject Selection</h5>
+            <p class="text-danger">Note: ONLY Irregular Students will fill out this section.</p>
+            <button type="button" class="btn btn-info mb-3" id="selectSubjectsBtn">SELECT SUBJECTS</button>
+
+            <div id="subjectSelectionArea">
+                <h5 class="card-title">Available Subjects</h5>
+                <div class="table-responsive mb-3">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Description</th>
+                            <th>Units</th>
+                            <th>Lec</th>
+                            <th>Lab</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="availableSubjectsTableBody">
+                        <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="schoolYear" class="form-label">School Year</label>
-                        <input type="text" class="form-control" id="schoolYear" placeholder="e.g., 2024-2025">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="enrollmentSemester" class="form-label">Semester</label>
-                        <select class="form-select" id="enrollmentSemester">
-                            <option selected disabled>Choose...</option>
-                            <option value="1st Semester">1st Semester</option>
-                            <option value="2nd Semester">2nd Semester</option>
-                            <option value="Summer">Summer</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="studentStatus" class="form-label">Student Status</label>
-                        <select class="form-select" id="studentStatus">
-                            <option selected disabled>Choose...</option>
-                            <option value="Regular">Regular</option>
-                            <option value="Irregular">Irregular</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="enrollmentStatus" class="form-label">Enrollment Status</label>
-                        <select class="form-select" id="enrollmentStatus">
-                            <option selected disabled>Choose...</option>
-                            <option value="New">New</option>
-                            <option value="Old">Old</option>
-                            <option value="Transferee">Transferee</option>
-                            <option value="Cross-Enrollee">Cross-Enrollee</option>
-                        </select>
-                    </div>
+                <h6 class="mb-2">Selected Subjects</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Schedule Id</th>
+                            <th>Course</th>
+                            <th>Description</th>
+                            <th>Units</th>
+                            <th>Time</th>
+                            <th>Day</th>
+                            <th>Room</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="selectedSubjectsTableBody">
+                        <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
+                <p class="card-text mt-3"><strong>Total Units:</strong> <span id="totalUnitsDisplay">0</span></p>
+            </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label for="lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="Enter First Name">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="middleName" class="form-label">Middle Name</label>
-                        <input type="text" class="form-control" id="middleName" placeholder="Enter Middle Name">
-                    </div>
+            <button type="submit" class="btn btn-primary mt-4">CONFIRM ENROLLMENT</button>
+            }
+        </div>
+    </div>
+
+    <!-- Schedule Selection Modal -->
+    <div class="modal fade" id="scheduleSelectionModal" tabindex="-1" role="dialog" aria-labelledby="scheduleSelectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="scheduleSelectionModalLabel">Select Schedule</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-
-                <div class="mb-3">
-                    <label for="homeAddress" class="form-label">Home Address</label>
-                    <input type="text" class="form-control" id="homeAddress" placeholder="Enter Home Address">
+                <div class="modal-body">
+                    <!-- Schedule options will be inserted here -->
                 </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="contactNumber" class="form-label">Contact Number</label>
-                        <input type="tel" class="form-control" id="contactNumber" placeholder="e.g., 09123456789">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter Email Address">
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Confirm Selection</button>
                 </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <label for="yearLevel" class="form-label">Year Level</label>
-                        <select class="form-select" id="yearLevel">
-                            <option selected disabled>Choose...</option>
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year">2nd Year</option>
-                            <option value="3rd Year">3rd Year</option>
-                            <option value="4th Year">4th Year</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="major" class="form-label">Major</label>
-                        <input type="text" class="form-control" id="major" placeholder="e.g., Software Dev">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="program" class="form-label">Program</label>
-                        <select class="form-select" id="program">
-                            <option selected disabled>Choose...</option>
-                            <option value="BSIT">BS Information Technology</option>
-                            <option value="BSCS">BS Computer Science</option>
-                            <option value="BSEE">BS Electrical Engineering</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="blockSection" class="form-label">Block Section</label>
-                        <input type="text" class="form-control" id="blockSection" placeholder="e.g., IT-A">
-                    </div>
-                </div>
-
-                <hr class="my-4">
-
-                <h5 class="card-title">Subject Selection</h5>
-                <p class="text-danger">Note: ONLY Irregular Students will fill out this section.</p>
-                <button type="button" class="btn btn-info mb-3" id="selectSubjectsBtn">SELECT SUBJECTS</button>
-
-                <div id="subjectSelectionArea">
-                    <div class="table-responsive mb-3">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>MIS CODE</th>
-                                <th>COURSE CODE</th>
-                                <th>DESCRIPTIVE TITLE</th>
-                                <th>Time</th>
-                                <th>Days</th>
-                                <th>Room</th>
-                                <th>Units</th>
-                                <th>Action</th> </tr>
-                            </thead>
-                            <tbody id="availableSubjectsTableBody">
-                            <tr>
-                                <td>MIS-GE101</td>
-                                <td>GE 101</td>
-                                <td>Understanding the Self</td>
-                                <td>8:00 AM - 9:00 AM</td>
-                                <td>M, W</td>
-                                <td>RM 201</td>
-                                <td class="units-cell">3</td>
-                                <td><button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button></td>
-                            </tr>
-                            <tr>
-                                <td>MIS-IT203</td>
-                                <td>IT 203</td>
-                                <td>Database Management</td>
-                                <td>10:00 AM - 11:30 AM</td>
-                                <td>T, Th</td>
-                                <td>RM 305</td>
-                                <td class="units-cell">3</td>
-                                <td><button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button></td>
-                            </tr>
-                            <tr>
-                                <td>MIS-IT203L</td>
-                                <td>IT 203L</td>
-                                <td>Database Management (Lab)</td>
-                                <td>1:00 PM - 3:00 PM</td>
-                                <td>F</td>
-                                <td>LAB 101</td>
-                                <td class="units-cell">1</td>
-                                <td><button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button></td>
-                            </tr>
-                            <tr>
-                                <td>MIS-PE102</td>
-                                <td>PE 102</td>
-                                <td>Physical Education 2</td>
-                                <td>3:00 PM - 4:00 PM</td>
-                                <td>M</td>
-                                <td>GYM</td>
-                                <td class="units-cell">2</td>
-                                <td><button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h6 class="mb-2">Selected Subjects</h6>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>MIS CODE</th>
-                                <th>COURSE CODE</th>
-                                <th>DESCRIPTIVE TITLE</th>
-                                <th>Time</th>
-                                <th>Days</th>
-                                <th>Room</th>
-                                <th>Units</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody id="selectedSubjectsTableBody">
-                            </tbody>
-                        </table>
-                    </div>
-                    <p class="card-text mt-3"><strong>Total Units:</strong> <span id="totalUnitsDisplay">0</span></p>
-                </div>
-
-                <button type="submit" class="btn btn-primary mt-4">CONFIRM ENROLLMENT</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 
-<script src="~/Content/bootstrap.bundle.min.js"></script>
+@section Scripts {
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // --- Enrollment Page Specific Logic ---
-        const selectSubjectsBtn = document.getElementById('selectSubjectsBtn');
-        const subjectSelectionArea = document.getElementById('subjectSelectionArea');
-        const availableSubjectsTableBody = document.getElementById('availableSubjectsTableBody');
-        const selectedSubjectsTableBody = document.getElementById('selectedSubjectsTableBody');
-        const totalUnitsDisplay = document.getElementById('totalUnitsDisplay');
+    $(document).ready(function() {
+        let selectedCourses = [];
+        let studentYearLevel = 1;
+        let studentProgram = '';
+        let academicYear = '';
+        let semesterId = 1;
+        let curriculumCode = '';
+        let availableCourses = [];
 
-        // Function to calculate and update total units
-        function updateSelectedUnits() {
-            let totalUnits = 0;
-            const rows = selectedSubjectsTableBody.querySelectorAll('tr');
-            rows.forEach(row => {
-                // Units column is at index 6 (0-indexed) in the new table structure
-                const unitsCell = row.children[6];
-                if (unitsCell) {
-                    const units = parseInt(unitsCell.textContent.trim());
-                    if (!isNaN(units)) {
-                        totalUnits += units;
-                    }
+        // Initialize form elements
+        $('#yearLevel').change(function() {
+            studentYearLevel = $(this).val();
+            loadAvailableCourses();
+        });
+
+        $('#program').change(function() {
+            studentProgram = $(this).val();
+            loadAvailableCourses();
+        });
+
+        $('#schoolYear').change(function() {
+            academicYear = $(this).val();
+            loadAvailableCourses();
+        });
+
+        $('#enrollmentSemester').change(function() {
+            semesterId = $(this).val();
+            loadAvailableCourses();
+        });
+
+        $('#selectSubjectsBtn').click(function() {
+            $('#subjectSelectionArea').show();
+            loadAvailableCourses();
+        });
+
+        function loadAvailableCourses() {
+            if (!studentYearLevel || !studentProgram || !academicYear || !semesterId) {
+                console.log('Missing required parameters');
+                return;
+            }
+
+            // Get curriculum code based on program and academic year
+            $.get(`/Student/Enrollment/GetCurriculum?progCode=${studentProgram}&ayCode=${academicYear}`, function(curriculumResponse) {
+                if (curriculumResponse.success) {
+                    curriculumCode = curriculumResponse.data.curCode;
+
+                    // Now get available courses
+                    $.get(`/Student/Enrollment/GetAvailableCourse?yearLevel=${studentYearLevel}&semesterId=${semesterId}&progCode=${studentProgram}&ayCode=${academicYear}&curCode=${curriculumCode}`,
+                        function(courseResponse) {
+                            if (courseResponse.success) {
+                                availableCourses = courseResponse.data;
+                                populateAvailableCourses(courseResponse.data);
+                            } else {
+                                console.error('Failed to load courses:', courseResponse.message);
+                                $('#availableSubjectsTableBody').html('<tr><td colspan="6" class="text-center">No available courses found</td></tr>');
+                            }
+                        }).fail(function() {
+                        console.error('AJAX request failed');
+                        $('#availableSubjectsTableBody').html('<tr><td colspan="6" class="text-center">Error loading courses</td></tr>');
+                    });
+                } else {
+                    console.error('Failed to get curriculum:', curriculumResponse.message);
                 }
             });
-            totalUnitsDisplay.textContent = totalUnits;
         }
 
-        // Show subject selection area when "SELECT SUBJECTS" is clicked
-        selectSubjectsBtn.addEventListener('click', function() {
-            subjectSelectionArea.style.display = 'block';
-            // Initially calculate units for any pre-filled subjects (if any)
-            updateSelectedUnits();
-        });
+        function populateAvailableCourses(courses) {
+            const $tableBody = $('#availableSubjectsTableBody');
+            $tableBody.empty();
 
-        // Handle adding subjects
-        availableSubjectsTableBody.addEventListener('click', function(event) {
-            if (event.target.classList.contains('add-subject-btn')) {
-                const row = event.target.closest('tr');
-                const newRow = row.cloneNode(true); // Clone the row
-
-                // Change 'Add' button to 'Remove' button
-                const actionCell = newRow.querySelector('.add-subject-btn').closest('td');
-                actionCell.innerHTML = '<button type="button" class="btn btn-danger btn-sm remove-subject-btn">Remove</button>';
-
-                selectedSubjectsTableBody.appendChild(newRow); // Add to selected table
-                row.remove(); // Remove from available table
-
-                updateSelectedUnits(); // Recalculate total units
+            if (courses.length === 0) {
+                $tableBody.append('<tr><td colspan="6" class="text-center">No available courses for the selected criteria</td></tr>');
+                return;
             }
-        });
 
-        // Handle removing subjects
-        selectedSubjectsTableBody.addEventListener('click', function(event) {
-            if (event.target.classList.contains('remove-subject-btn')) {
-                const row = event.target.closest('tr');
-                const newRow = row.cloneNode(true); // Clone the row
+            courses.forEach(course => {
+                $tableBody.append(`
+            <tr>
+                <td>${course.Code}</td>
+                <td>${course.Title}</td>
+                <td>${course.Units}</td>
+                <td>${course.LecHours}</td>
+                <td>${course.LabHours}</td>
+                <td>
+                    <button type="button" 
+                            class="btn btn-success btn-sm add-subject-btn"
+                            data-course-code="${course.Code}">
+                        Add
+                    </button>
+                </td>
+            </tr>
+        `);
+            });
+        }
 
-                // Change 'Remove' button back to 'Add' button
-                const actionCell = newRow.querySelector('.remove-subject-btn').closest('td');
-                actionCell.innerHTML = '<button type="button" class="btn btn-success btn-sm add-subject-btn">Add</button>';
+        function updateSelectedSubjectsTable() {
+            const $tableBody = $('#selectedSubjectsTableBody');
+            $tableBody.empty();
 
-                availableSubjectsTableBody.appendChild(newRow); // Add back to available table
-                row.remove(); // Remove from selected table
-
-                updateSelectedUnits(); // Recalculate total units
+            if (!selectedCourses || !Array.isArray(selectedCourses) || selectedCourses.length === 0) {
+                $tableBody.append('<tr><td colspan="8" class="text-center">No selected courses</td></tr>');
+                return;
             }
+
+            selectedCourses.forEach(course => {
+                try {
+                    // 1. Find the course in availableCourses
+                    const courseInfo = availableCourses.find(c => c.Code === course.code);
+                    if (!courseInfo) {
+                        console.error('Course not found:', course.code);
+                        $tableBody.append(`<tr class="table-danger"><td colspan="8">Course ${course.code} not found</td></tr>`);
+                        return;
+                    }
+
+                    // 2. Find the specific schedule (with type conversion)
+                    const selectedScheduleId = Number(course.scheduleDetails);
+                    const scheduleInfo = courseInfo.ScheduleDetails?.find(s =>
+                        Number(s.ScheduleId) === selectedScheduleId
+                    );
+
+                    if (!scheduleInfo) {
+                        console.error('Schedule not found:', {
+                            course: course.code,
+                            scheduleId: course.scheduleDetails,
+                            availableSchedules: courseInfo.ScheduleDetails?.map(s => s.ScheduleId)
+                        });
+                        $tableBody.append(`<tr class="table-warning"><td colspan="8">Schedule ${course.scheduleDetails} not found for ${course.code}</td></tr>`);
+                        return;
+                    }
+
+                    // 3. Validate and format time slots
+                    let timeSlots = 'No schedule';
+                    let days = '?';
+
+                    if (scheduleInfo.TimeSlots && Array.isArray(scheduleInfo.TimeSlots)) {
+                        timeSlots = scheduleInfo.TimeSlots.map(slot => {
+                            try {
+                                const formatTime = (time) => {
+                                    if (!time || time.Hours === undefined || time.Minutes === undefined) {
+                                        return '--:--';
+                                    }
+                                    const hours = time.Hours % 12 || 12;
+                                    const minutes = time.Minutes.toString().padStart(2, '0');
+                                    const ampm = time.Hours >= 12 ? 'PM' : 'AM';
+                                    return `${hours}:${minutes} ${ampm}`;
+                                };
+                                return `${formatTime(slot.StartTime)}-${formatTime(slot.EndTime)}`;
+                            } catch (e) {
+                                console.error('Error formatting time slot:', slot, e);
+                                return 'Invalid time';
+                            }   
+                        }).join('<br>');
+
+                        days = scheduleInfo.TimeSlots.map(slot => slot.Day || '?').join('/');
+                    }
+
+                    // 4. Render the row
+                    $tableBody.append(`
+                <tr>
+                    <td>${scheduleInfo.ScheduleId || 'N/A'}</td>
+                    <td>${courseInfo.Code || 'N/A'}</td>
+                    <td>${courseInfo.Title || 'N/A'}</td>
+                    <td>${courseInfo.Units || '0'}</td>
+                    <td>${timeSlots}</td>
+                    <td>${days}</td>
+                    <td>${scheduleInfo.RoomNumber || 'TBA'}</td>
+                    <td>
+                        <button type="button" 
+                                class="btn btn-danger btn-sm remove-subject-btn"
+                                data-course-code="${course.code}">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+            `);
+
+                } catch (error) {
+                    console.error('Error rendering course:', course, error);
+                    $tableBody.append(`
+                <tr class="table-danger">
+                    <td colspan="8">Error displaying course ${course.code || 'unknown'}</td>
+                </tr>
+            `);
+                }
+            });
+        }
+
+        function updateTotalUnits() {
+            let totalUnits = 0;
+            selectedCourses.forEach(course => {
+                const courseInfo = availableCourses.find(c => c.Code === course.code);
+                totalUnits += courseInfo.Units;
+            });
+            $('#totalUnitsDisplay').text(totalUnits);
+        }
+
+        $(document).on('click', '.add-subject-btn', function() {
+            const courseCode = $(this).data('course-code');
+
+            if (selectedCourses.some(c => c.code === courseCode)) {
+                alert('This course is already selected');
+                return;
+            }
+
+            const $modal = $('#scheduleSelectionModal');
+            const $modalBody = $modal.find('.modal-body');
+            $modalBody.empty();
+
+            $modalBody.append('<h5>Select Schedule Option:</h5>');
+
+            const course = availableCourses.find(c => c.Code === courseCode);
+            const $table = $('<table class="table table-bordered"><thead><tr><th>Schedule ID</th><th>Time</th><th>Day</th><th>Room</th><th>Select</th></tr></thead><tbody></tbody></table>');
+            const $tableBody = $table.find('tbody');
+
+            course.ScheduleDetails.forEach(schedule => {
+                // Format time slots
+                const timeSlots = schedule.TimeSlots.map(slot => {
+                    const formatTime = (time) => {
+                        const hours = time.Hours % 12 || 12;
+                        const minutes = time.Minutes.toString().padStart(2, '0');
+                        const ampm = time.Hours >= 12 ? 'PM' : 'AM';
+                        return `${hours}:${minutes} ${ampm}`;
+                    };
+                    return `${formatTime(slot.StartTime)}-${formatTime(slot.EndTime)}`;
+                }).join('<br>');
+
+                // Format days
+                const days = schedule.TimeSlots.map(slot => slot.Day).join('/');
+
+                const $row = $('<tr></tr>');
+                $row.append(`<td>${schedule.ScheduleId}</td>`);
+                $row.append(`<td>${timeSlots}</td>`);
+                $row.append(`<td>${days}</td>`);
+                $row.append(`<td>${schedule.RoomNumber}</td>`);
+
+                const $radioCell = $('<td></td>');
+                const $radioDiv = $('<div class="form-check"></div>');
+                const $radio = $(`<input class="form-check-input" type="radio" name="scheduleOption" id="schedule${schedule.ScheduleId}" value="${schedule.ScheduleId}">`);
+                const $label = $(`<label class="form-check-label" for="schedule${schedule.ScheduleId}">Select</label>`);
+
+                // Check for schedule conflicts
+                const hasConflict = schedule.TimeSlots.some(slot =>
+                    checkScheduleConflict(slot, selectedCourses)
+                );
+
+                if (hasConflict) {
+                    $radio.prop('disabled', true);
+                    $label.append('<span class="text-danger"> (Conflict)</span>');
+                    $row.addClass('table-danger');
+                }
+
+                $radioDiv.append($radio).append($label);
+                $radioCell.append($radioDiv);
+                $row.append($radioCell);
+
+                $tableBody.append($row);
+            });
+
+            $modalBody.append($table);
+
+            // Set up modal buttons
+            $modal.find('.btn-primary').off('click').on('click', function() {
+                const selectedSchedule = $modalBody.find('input[name="scheduleOption"]:checked').val();
+
+                if (!selectedSchedule) {
+                    alert('Please select a schedule option');
+                    return;
+                }
+
+                // Add the selected course and schedule
+                selectedCourses.push({
+                    code: courseCode,
+                    scheduleDetails: selectedSchedule
+                });
+
+                updateSelectedSubjectsTable();
+                updateTotalUnits();
+                $modal.modal('hide');
+            });
+
+            $modal.modal('show');
         });
 
-        // Optional: Form submission handler (for preventing default behavior)
-        document.getElementById('enrollmentForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-            alert('Enrollment Confirmed! (This is a placeholder, actual submission logic would go here)');
-            // Here you would collect all form data and selected subjects
-            // and send it to your backend for processing.
+        function checkScheduleConflict(newSlot, selectedCourses) {
+            for (const course of selectedCourses) {
+                const courseInfo = availableCourses.find(c => c.Code === course.code);
+                if (!courseInfo) continue;
+
+                const schedule = courseInfo.ScheduleDetails.find(s => s.ScheduleId === course.scheduleDetails);
+                if (!schedule) continue;
+
+                for (const existingSlot of schedule.timeSlots) {
+                    if (existingSlot.Day === newSlot.Day) {
+                        const newStart = newSlot.StartTime.Hours * 60 + newSlot.StartTime.Minutes;
+                        const newEnd = newSlot.EndTime.Hours * 60 + newSlot.EndTime.Minutes;
+                        const existingStart = existingSlot.StartTime.Hours * 60 + existingSlot.StartTime.Minutes;
+                        const existingEnd = existingSlot.EndTime.Hours * 60 + existingSlot.EndTime.Minutes;
+
+                        // Check for time overlap
+                        if ((newStart >= existingStart && newStart < existingEnd) ||
+                            (newEnd > existingStart && newEnd <= existingEnd) ||
+                            (newStart <= existingStart && newEnd >= existingEnd)) {
+                            return true; // Conflict found
+                        }
+                    }
+                }
+            }
+            return false; // No conflicts
+        }
+
+        $(document).on('click', '.remove-subject-btn', function() {
+            const courseCode = $(this).data('course-code');
+            selectedCourses = selectedCourses.filter(c => c.code !== courseCode);
+            updateSelectedSubjectsTable();
+            updateTotalUnits();
         });
+
+
+        // Form submission handler
+        $('#enrollmentForm').submit(function(e) {
+            e.preventDefault();
+
+            // Validate at least one course is selected
+            if (selectedCourses.length === 0) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Please select at least one course before submitting.',
+                    icon: 'error'
+                });
+                return;
+            }
+            
+            const studentId = parseInt($('#Id').val());
+            const semesterId = parseInt($('#enrollmentSemester').val());
+            const yearLevel = parseInt($('#yearLevel').val());
+            // Collect form values
+            const formData = {
+                Student : {
+                    Id: studentId,
+                    FirstName: $('#FirstName').val(),
+                    LastName: $('#LastName').val(),
+                    MiddleName: $('#MiddleName').val(),
+                    HomeAddress: $('#HomeAddress').val(),
+                    Contact: $('#Contact').val(),
+                    Email: $('#Email').val(),
+                    YearLevel:yearLevel,
+                    Program: $('#program').val(),
+                    Semester: semesterId,
+                    Status: $('#studentStatus').val(),
+                    BlockSection: $('#blockSection').val(),
+                },
+                Enrollment: {
+                    EnrollmentStatus: $('#enrollmentStatus').val(),
+                    AcademicYear: academicYear,
+                    StudentId: studentId,
+                    Semester: semesterId,
+                    YearLevel: yearLevel,
+                },
+                EnrollingCourses : Array.from(selectedCourses).map(code => ({
+                        CourseCode: code.code,
+                        ScheduleId: parseInt(code.scheduleDetails.ScheduleId)
+                    }))
+                
+                
+            };
+
+            // Submit via AJAX
+            $.ajax({
+                url: '/Student/Enrollment/SubmitForm', 
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message || 'Enrollment submitted successfully.',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            willClose: () => {
+                                window.location.href = response.redirectUrl || '/Student/Enrollment/Confirmation';
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.error || 'Failed to submit enrollment.',
+                            icon: 'error'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    let errorMessage = xhr.responseJSON?.error || 'An unexpected error occurred.';
+                    Swal.fire({
+                        title: 'Error',
+                        text: errorMessage,
+                        icon: 'error'
+                    });
+                }
+            });
+        });
+        
+        
     });
 </script>
+}
 </body>
 </html>

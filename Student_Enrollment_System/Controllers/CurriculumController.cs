@@ -364,9 +364,9 @@ namespace Student_Enrollment_System.Controllers
                     }
                 }
             }
-
             return curriculumCourses;
         }
+        
         private List<Course> GetCoursesFromDatabase()
         {
             var courses = new List<Course>();

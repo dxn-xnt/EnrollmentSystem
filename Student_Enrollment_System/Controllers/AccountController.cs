@@ -161,7 +161,7 @@ namespace Student_Enrollment_System.Controllers
                                 LastName = reader["STUD_LNAME"].ToString(),
                                 Email = reader["STUD_EMAIL"].ToString()
                             };
-                            
+                            Session["StudentId"] = student.Id;
                             return Json(new
                             { 
                                 success = true,

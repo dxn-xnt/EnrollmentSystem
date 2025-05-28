@@ -11,7 +11,10 @@
     @Scripts.Render("~/bundles/modernizr")
 
     <style>
-        
+        html{
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
         body {
             font-family: 'Montserrat', sans-serif;
         }
@@ -52,19 +55,19 @@
                        href="@Url.Action("Dashboard", "ProgramHead")">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "StaffManagement" ? "active" : "")"
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Students" ? "active" : "")"
                        href="@Url.Action("Students", "ProgramHead")">Students</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "EnrollmentApproval" ? "active" : "")"
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Enrollments" ? "active" : "")"
                        href="@Url.Action("Enrollments", "ProgramHead")">Enrollments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "SetSchedules" ? "active" : "")"
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Schedules" ? "active" : "")"
                        href="@Url.Action("Schedules", "ProgramHead")">Schedules</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("LogOut", "Account")">Logout</a>
+                    <a class="nav-link" href="@Url.Action("Index", "Home")">Logout</a>
                 </li>
             </ul>
         </div>
